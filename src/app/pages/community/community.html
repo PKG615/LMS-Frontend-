@@ -1,0 +1,222 @@
+<div class="space-y-8 animate-fade-in">
+  <!-- Header with Search & Tab Switches -->
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-50">Academy Discussion Forum</h1>
+      <p class="text-xs text-slate-500 mt-1">Share research files, ask questions, and collaborate in real-time with peers and lead researchers</p>
+    </div>
+    <button (click)="showNewPostPopup.set(true)"
+            class="bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-1 cursor-pointer border-none">
+      <mat-icon class="text-sm">add</mat-icon> Start Discussion
+    </button>
+  </div>
+
+  <!-- Search, Tabs and Tags bar -->
+  <div class="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+    <!-- Tabs -->
+    <div class="flex gap-1.5 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl self-start">
+      <button (click)="forumTabFilter.set('all')"
+              [class]="'px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ' + (forumTabFilter() === 'all' ? 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-150 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300')"
+              type="button">All Discussions</button>
+      <button (click)="forumTabFilter.set('liked')"
+              [class]="'px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ' + (forumTabFilter() === 'liked' ? 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-150 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300')"
+              type="button">Liked Threads</button>
+      <button (click)="forumTabFilter.set('my-posts')"
+              [class]="'px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ' + (forumTabFilter() === 'my-posts' ? 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-150 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300')"
+              type="button">My Threads</button>
+    </div>
+
+    <!-- Search input -->
+    <div class="relative flex-1 max-w-md w-full">
+      <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 pointer-events-none">
+        <mat-icon class="text-sm">search</mat-icon>
+      </span>
+      <input type="text" [value]="forumSearchQuery()" (input)="forumSearchQuery.set($any($event.target).value)"
+             placeholder="Search posts, topics or authors..."
+             class="w-full pl-9 pr-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200/40 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-150" />
+    </div>
+  </div>
+
+  <!-- Main Community Split Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <!-- Left Column: Posts Feed -->
+    <div class="lg:col-span-2 space-y-6">
+      @for (post of filteredForumPosts(); track post.id) {
+        <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-5 animate-fade-in animate-item">
+          
+          <!-- Post Author metadata -->
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-3">
+              <img [src]="post.avatar" referrerpolicy="no-referrer" alt="Author" class="w-10 h-10 rounded-full object-cover border-2 border-brand-500/10 shadow-sm" />
+              <div>
+                <h4 class="font-extrabold text-xs text-slate-850 dark:text-slate-150">{{ post.author }}</h4>
+                <span class="text-[9px] text-slate-400 font-semibold">{{ post.time }}</span>
+              </div>
+            </div>
+            
+            <!-- Like button -->
+            <button (click)="state.likePost(post.id)"
+                    [class]="'p-2 rounded-xl transition-all flex items-center justify-center border-none cursor-pointer ' + 
+                             (post.hasLiked ? 'bg-rose-500/10 text-rose-500' : 'bg-slate-50 dark:bg-slate-850 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200')"
+                    type="button">
+              <mat-icon class="text-xs">{{ post.hasLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
+            </button>
+          </div>
+
+          <!-- Post Body text -->
+          <div class="space-y-2">
+            <h3 class="font-black text-sm text-slate-850 dark:text-slate-150 tracking-tight">{{ post.title }}</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{{ post.content }}</p>
+          </div>
+
+          <!-- Post Tags list -->
+          <div class="flex flex-wrap gap-1.5">
+            @for (tag of post.tags; track tag) {
+              <button (click)="forumTagFilter.set(forumTagFilter() === tag ? 'all' : tag)"
+                      class="border-none cursor-pointer"
+                      [class]="'text-[9px] font-bold px-2 py-0.5 rounded-md transition-all ' + 
+                               (forumTagFilter() === tag ? 'bg-brand-500 text-white' : 'bg-indigo-50 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100')">
+                #{{ tag }}
+              </button>
+            }
+          </div>
+
+          <!-- Comments and Likes Counters -->
+          <div class="flex items-center gap-6 pt-3 border-t border-slate-100 dark:border-slate-850/60 text-[11px] font-bold text-slate-400">
+            <span class="flex items-center gap-1"><mat-icon class="text-xs">favorite</mat-icon> {{ post.likes }} Likes</span>
+            <span class="flex items-center gap-1"><mat-icon class="text-xs">chat_bubble_outline</mat-icon> {{ post.comments.length }} Comments</span>
+          </div>
+
+          <!-- NESTED COMMENTS BLOCK -->
+          @if (post.comments.length > 0) {
+            <div class="bg-slate-50 dark:bg-slate-850/30 rounded-2xl p-4 space-y-4 border border-slate-100 dark:border-slate-850/40">
+              <h4 class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Discussion Board Responses</h4>
+              
+              <div class="space-y-4">
+                @for (comment of post.comments; track comment.id) {
+                  <div class="space-y-2.5">
+                    <div class="flex gap-3">
+                      <img [src]="comment.avatar" referrerpolicy="no-referrer" alt="Commenter" class="w-8 h-8 rounded-full object-cover shrink-0" />
+                      <div class="flex-1 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-3 rounded-2xl shadow-xs relative">
+                        <div class="flex justify-between items-baseline">
+                          <h5 class="font-bold text-[11px] text-slate-850 dark:text-slate-200">{{ comment.author }}</h5>
+                          <span class="text-[9px] text-slate-400">{{ comment.time }}</span>
+                        </div>
+                        <p class="text-[11px] text-slate-650 dark:text-slate-400 mt-1 leading-relaxed">{{ comment.text }}</p>
+
+                        <!-- Comment interaction actions (like comment & inline reply toggle) -->
+                        <div class="flex items-center gap-4 mt-2 pt-2 border-t border-slate-50 dark:border-slate-850 text-[10px] font-bold text-slate-400">
+                          <button (click)="state.likePostComment(post.id, comment.id)"
+                                  [class]="'flex items-center gap-1 cursor-pointer border-none bg-transparent ' + (comment.hasLiked ? 'text-rose-500' : 'hover:text-slate-600')"
+                                  type="button">
+                            <mat-icon class="text-xs">{{ comment.hasLiked ? 'favorite' : 'favorite_border' }}</mat-icon> 
+                            {{ comment.likes }}
+                          </button>
+                          <button (click)="activeReplyCommentId.set(activeReplyCommentId() === comment.id ? null : comment.id)"
+                                  class="flex items-center gap-1 hover:text-brand-500 cursor-pointer border-none bg-transparent"
+                                  type="button">
+                            <mat-icon class="text-xs">reply</mat-icon> Reply
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Comment Nested Replies list -->
+                    @if (comment.replies && comment.replies.length > 0) {
+                      <div class="pl-11 space-y-2 border-l border-slate-200 dark:border-slate-800 ml-4">
+                        @for (reply of comment.replies; track reply.id) {
+                          <div class="flex gap-2.5">
+                            <img [src]="reply.avatar" referrerpolicy="no-referrer" alt="Replier" class="w-6 h-6 rounded-full object-cover shrink-0" />
+                            <div class="flex-1 bg-slate-100 dark:bg-slate-800/80 p-2.5 rounded-xl text-[10px] leading-relaxed text-slate-700 dark:text-slate-300">
+                              <div class="flex justify-between items-baseline">
+                                <span class="font-extrabold text-slate-855 dark:text-slate-100">{{ reply.author }}</span>
+                                <span class="text-[8px] text-slate-400 font-mono">{{ reply.time }}</span>
+                              </div>
+                              <p class="mt-0.5">{{ reply.text }}</p>
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    }
+
+                    <!-- Dynamic reply field -->
+                    @if (activeReplyCommentId() === comment.id) {
+                      <div class="pl-11 flex gap-2 animate-fade-in">
+                        <input #replyInput type="text" placeholder="Write nested reply..."
+                               class="flex-1 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200/40 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100" />
+                        <button (click)="state.addPostCommentReply(post.id, comment.id, replyInput.value); activeReplyCommentId.set(null)"
+                                class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-[10px] font-bold cursor-pointer border-none"
+                                type="button">
+                          Send
+                        </button>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Add new comment on this post -->
+          <div class="flex gap-3">
+            <input #commentInput type="text" placeholder="Join consultation on this thread..."
+                   class="flex-1 px-4 py-2 bg-slate-50 dark:bg-slate-855 border border-slate-100 dark:border-slate-800/60 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100" />
+            <button (click)="state.addPostComment(post.id, commentInput.value); commentInput.value = ''"
+                    class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center justify-center border-none"
+                    type="button">
+              Post Comment
+            </button>
+          </div>
+
+        </div>
+      } @empty {
+        <div class="p-12 text-center bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl">
+          <p class="text-xs text-slate-400 italic">No discussions found in directory matching active filters.</p>
+        </div>
+      }
+    </div>
+
+    <!-- Right Column: Sidebar directories & Filter Tags -->
+    <div class="space-y-6">
+      <!-- Forums Directories Tags select block -->
+      <div class="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+        <div class="flex justify-between items-center">
+          <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Topics & Tags</h3>
+          @if (forumTagFilter() !== 'all') {
+            <button (click)="forumTagFilter.set('all')" class="text-[9px] uppercase font-bold text-rose-500 border-none bg-transparent cursor-pointer">Reset</button>
+          }
+        </div>
+        <div class="space-y-1.5 text-xs">
+          <button (click)="forumTagFilter.set('angular-signals')"
+                  [class]="'w-full text-left p-2.5 rounded-xl flex items-center justify-between transition-all border-none bg-transparent cursor-pointer ' + (forumTagFilter() === 'angular-signals' ? 'bg-brand-500/10 text-brand-600 font-bold' : 'hover:bg-slate-50 dark:hover:bg-slate-800')">
+            <span>#angular-signals</span>
+            <span class="text-[10px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md text-slate-500 font-mono">12 posts</span>
+          </button>
+          <button (click)="forumTagFilter.set('figma-design-systems')"
+                  [class]="'w-full text-left p-2.5 rounded-xl flex items-center justify-between transition-all border-none bg-transparent cursor-pointer ' + (forumTagFilter() === 'figma-design-systems' ? 'bg-brand-500/10 text-brand-600 font-bold' : 'hover:bg-slate-50 dark:hover:bg-slate-800')">
+            <span>#figma-design-systems</span>
+            <span class="text-[10px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md text-slate-500 font-mono">8 posts</span>
+          </button>
+          <button (click)="forumTagFilter.set('saas-growth-loops')"
+                  [class]="'w-full text-left p-2.5 rounded-xl flex items-center justify-between transition-all border-none bg-transparent cursor-pointer ' + (forumTagFilter() === 'saas-growth-loops' ? 'bg-brand-500/10 text-brand-600 font-bold' : 'hover:bg-slate-50 dark:hover:bg-slate-800')">
+            <span>#saas-growth-loops</span>
+            <span class="text-[10px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md text-slate-500 font-mono">5 posts</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Collaborative Guidelines -->
+      <div class="p-5 rounded-3xl bg-slate-50 dark:bg-slate-850/40 border border-slate-200/20 dark:border-slate-800/30 space-y-3">
+        <div class="flex items-center gap-2 text-brand-600">
+          <mat-icon class="text-sm">gavel</mat-icon>
+          <span class="text-xs font-extrabold uppercase">Forum Etiquette</span>
+        </div>
+        <p class="text-[11px] text-slate-500 leading-relaxed">
+          Welcome to the global LMS collaboration hub. Keep discussions professional, link research files, and check answers before flagging errors.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>

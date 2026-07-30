@@ -1,0 +1,61 @@
+<div class="space-y-4">
+  <div class="flex items-center justify-between">
+    <h3 class="text-sm font-black text-slate-900 dark:text-slate-50">Open Internships</h3>
+    <div class="flex gap-2">
+      <input [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)" (keyup.enter)="load()"
+        placeholder="Search internships…"
+        class="text-xs rounded-lg border border-slate-200 dark:border-slate-800 p-2 bg-slate-50 dark:bg-slate-850" />
+      <button (click)="load()" class="text-xs font-bold text-brand-500 bg-transparent border-none cursor-pointer">Search</button>
+    </div>
+  </div>
+
+  @if (error()) { <p class="text-xs text-red-500">{{ error() }}</p> }
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    @for (job of internships(); track job._id) {
+      <div class="rounded-2xl border border-slate-200/50 dark:border-slate-800/50 p-4 space-y-2">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-sm font-bold text-slate-800 dark:text-slate-200">{{ job.title }}</p>
+            <p class="text-[11px] text-slate-500">{{ job.companyName }} · {{ job.domain }}</p>
+          </div>
+          @if (hasApplied(job._id)) {
+            <span class="text-[10px] font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 px-2 py-1 rounded-full">Applied</span>
+          }
+        </div>
+        <p class="text-[11px] text-slate-500 line-clamp-2">{{ job.description }}</p>
+        <div class="flex items-center gap-3 text-[10px] text-slate-400">
+          <span>{{ job.location }}</span>
+          <span>·</span>
+          <span>₹{{ job.stipendMin | number }}–₹{{ job.stipendMax | number }}</span>
+          <span>·</span>
+          <span>{{ job.duration }}</span>
+        </div>
+
+        @if (applyingToId() === job._id) {
+          <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+            <input [ngModel]="resumeUrl()" (ngModelChange)="resumeUrl.set($event)" placeholder="Resume URL"
+              class="w-full text-xs rounded-lg border border-slate-200 dark:border-slate-800 p-2" />
+            <textarea [ngModel]="coverLetter()" (ngModelChange)="coverLetter.set($event)" rows="2" placeholder="Cover letter (optional)"
+              class="w-full text-xs rounded-lg border border-slate-200 dark:border-slate-800 p-2"></textarea>
+            <div class="flex gap-2">
+              <button (click)="submitApplication(job)" [disabled]="submittingApplication()"
+                class="px-3 py-1.5 rounded-lg bg-brand-500 hover:bg-brand-600 disabled:opacity-50 text-white text-[11px] font-bold border-none cursor-pointer">
+                Submit Application
+              </button>
+              <button (click)="cancelApply()"
+                class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 text-[11px] font-bold border-none cursor-pointer">
+                Cancel
+              </button>
+            </div>
+          </div>
+        } @else if (!hasApplied(job._id)) {
+          <button (click)="startApply(job)"
+            class="text-xs font-bold text-brand-500 bg-transparent border-none cursor-pointer p-0">Apply Now →</button>
+        }
+      </div>
+    } @empty {
+      @if (!loading()) { <p class="text-xs text-slate-400">No open internships right now.</p> }
+    }
+  </div>
+</div>

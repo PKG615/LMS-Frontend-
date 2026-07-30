@@ -1,0 +1,44 @@
+<div class="max-w-lg mx-auto space-y-6 py-10">
+  <div class="text-center space-y-2">
+    <mat-icon class="text-4xl text-brand-500">verified</mat-icon>
+    <h1 class="text-xl font-black text-slate-900 dark:text-slate-50">Verify a Certificate</h1>
+    <p class="text-xs text-slate-500">Enter a certificate number to confirm its authenticity.</p>
+  </div>
+
+  <div class="flex gap-2">
+    <input [ngModel]="certificateNumber()" (ngModelChange)="certificateNumber.set($event)"
+      (keyup.enter)="verify()" placeholder="e.g. CERT-2026-000123"
+      class="flex-1 text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3" />
+    <button (click)="verify()" [disabled]="loading()"
+      class="px-5 py-3 rounded-xl bg-brand-500 hover:bg-brand-600 disabled:opacity-50 text-white text-xs font-bold border-none cursor-pointer">
+      {{ loading() ? 'Checking…' : 'Verify' }}
+    </button>
+  </div>
+
+  @if (error()) {
+    <p class="text-xs text-red-500 text-center">{{ error() }}</p>
+  }
+
+  @if (searched() && result()) {
+    <div class="rounded-2xl p-6 border space-y-3"
+      [class.border-emerald-300]="result()!.valid" [class.bg-emerald-50]="result()!.valid"
+      [class.border-red-300]="!result()!.valid" [class.bg-red-50]="!result()!.valid">
+      @if (result()!.valid) {
+        <div class="flex items-center gap-2 text-emerald-600">
+          <mat-icon>check_circle</mat-icon>
+          <span class="font-bold text-sm">Valid Certificate</span>
+        </div>
+        <p class="text-xs text-slate-600"><strong>Recipient:</strong> {{ result()!.studentName }}</p>
+        <p class="text-xs text-slate-600"><strong>Course:</strong> {{ result()!.courseTitle }}</p>
+        <p class="text-xs text-slate-600"><strong>Issued:</strong> {{ result()!.issuedOn | date:'longDate' }}</p>
+        <p class="text-[10px] font-mono text-slate-400">{{ result()!.certificateNumber }}</p>
+      } @else {
+        <div class="flex items-center gap-2 text-red-600">
+          <mat-icon>cancel</mat-icon>
+          <span class="font-bold text-sm">Certificate Not Found</span>
+        </div>
+        <p class="text-xs text-slate-500">No certificate matches this number. Double-check and try again.</p>
+      }
+    </div>
+  }
+</div>

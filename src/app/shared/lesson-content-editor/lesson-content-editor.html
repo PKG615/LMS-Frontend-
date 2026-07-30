@@ -1,0 +1,105 @@
+<div class="space-y-5 p-4 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 bg-slate-50 dark:bg-slate-850">
+  <div class="flex items-center justify-between">
+    <div>
+      <h4 class="text-sm font-black text-slate-900 dark:text-slate-50">{{ lesson().title }}</h4>
+      <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ lesson().type }} · {{ lesson().status }}</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button (click)="toggleFreePreview()"
+        class="text-[10px] font-bold px-2.5 py-1 rounded-full border-none cursor-pointer"
+        [class.bg-emerald-100]="lesson().isFreePreview" [class.text-emerald-600]="lesson().isFreePreview"
+        [class.bg-slate-100]="!lesson().isFreePreview" [class.text-slate-500]="!lesson().isFreePreview">
+        {{ lesson().isFreePreview ? 'Free Preview ON' : 'Free Preview OFF' }}
+      </button>
+      @if (lesson().status !== 'published') {
+        <button (click)="publishLesson()"
+          class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-brand-500 text-white border-none cursor-pointer">
+          Publish Lesson
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (error()) { <p class="text-xs text-red-500">{{ error() }}</p> }
+
+  @switch (lesson().type) {
+    @case ('video') {
+      <div class="space-y-2">
+        @if (lesson().video?.transcodeStatus) {
+          <p class="text-[10px] text-slate-400">Transcode status: {{ lesson().video?.transcodeStatus }}</p>
+        }
+        <input type="file" accept="video/*" (change)="onFileSelected($event, 'video')" [disabled]="uploading()" class="text-xs" />
+        @if (uploading()) { <p class="text-[10px] text-amber-500">Uploading…</p> }
+      </div>
+    }
+    @case ('pdf') {
+      <div class="space-y-2">
+        <input type="file" accept="application/pdf" (change)="onFileSelected($event, 'pdf')" [disabled]="uploading()" class="text-xs" />
+        @if (lesson().pdfFile) { <p class="text-[10px] text-emerald-500">PDF uploaded ✓</p> }
+        @if (uploading()) { <p class="text-[10px] text-amber-500">Uploading…</p> }
+      </div>
+    }
+    @case ('text') {
+      <div class="space-y-2">
+        <textarea [ngModel]="textDraft()" (ngModelChange)="textDraft.set($event)" (blur)="autoSaveDraft()" rows="8"
+          class="w-full text-xs rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3"
+          placeholder="Write lesson content… (auto-saves on blur)"></textarea>
+        <button (click)="saveText()" [disabled]="saving()"
+          class="px-4 py-2 rounded-xl bg-brand-500 hover:bg-brand-600 disabled:opacity-50 text-white text-xs font-bold border-none cursor-pointer">
+          {{ saving() ? 'Saving…' : 'Save Text Content' }}
+        </button>
+      </div>
+    }
+    @case ('quiz') {
+      <div class="space-y-4">
+        <div class="flex gap-3">
+          <label class="text-[10px] text-slate-500 flex-1">
+            Passing Score (%)
+            <input type="number" [ngModel]="quizPassingScore()" (ngModelChange)="quizPassingScore.set($event)"
+              class="w-full mt-1 text-xs rounded-lg border border-slate-200 dark:border-slate-800 p-2" />
+          </label>
+          <label class="text-[10px] text-slate-500 flex-1">
+            Time Limit (min)
+            <input type="number" [ngModel]="quizTimeLimit()" (ngModelChange)="quizTimeLimit.set($event)"
+              class="w-full mt-1 text-xs rounded-lg border border-slate-200 dark:border-slate-800 p-2" />
+          </label>
+        </div>
+        <button (click)="saveQuizSettings()" class="text-[10px] font-bold text-brand-500 bg-transparent border-none cursor-pointer">Save Quiz Settings</button>
+
+        <div class="space-y-2">
+          @for (q of lesson().quiz?.questions ?? []; track q._id) {
+            <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+              <div class="flex items-start justify-between">
+                <p class="text-xs font-bold text-slate-800 dark:text-slate-200">{{ q.question }}</p>
+                <button (click)="deleteQuizQuestion(q._id)" class="text-red-400 bg-transparent border-none cursor-pointer text-[10px]">Delete</button>
+              </div>
+              <ul class="mt-1 space-y-0.5">
+                @for (opt of q.options; track $index) {
+                  <li class="text-[11px]" [class.text-emerald-500]="opt.isCorrect" [class.font-bold]="opt.isCorrect">
+                    {{ opt.isCorrect ? '✓' : '·' }} {{ opt.text }}
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+
+        <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 space-y-2">
+          <input [ngModel]="newQuestion()" (ngModelChange)="newQuestion.set($event)" placeholder="New question"
+            class="w-full text-xs rounded-lg border border-slate-200 dark:border-slate-800 p-2" />
+          @for (opt of newOptions(); track $index) {
+            <div class="flex items-center gap-2">
+              <input type="radio" name="correctOption" [checked]="newCorrectIndex() === $index" (change)="newCorrectIndex.set($index)" />
+              <input [ngModel]="opt" (ngModelChange)="setOptionText($index, $event)" [placeholder]="'Option ' + ($index + 1)"
+                class="flex-1 text-xs rounded-lg border border-slate-200 dark:border-slate-800 p-2" />
+            </div>
+          }
+          <button (click)="addQuizQuestion()"
+            class="px-3 py-1.5 rounded-lg bg-brand-500 hover:bg-brand-600 text-white text-[11px] font-bold border-none cursor-pointer">
+            Add Question
+          </button>
+        </div>
+      </div>
+    }
+  }
+</div>

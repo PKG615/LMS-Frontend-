@@ -1,0 +1,43 @@
+<div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm p-5 space-y-4">
+  <div class="flex items-center justify-between">
+    <h3 class="text-sm font-black text-slate-900 dark:text-slate-50">Server Notification Log</h3>
+    <span class="text-[10px] text-slate-400">{{ total() }} total</span>
+  </div>
+
+  @if (loading()) {
+    <p class="text-xs text-slate-400">Loading…</p>
+  }
+  @if (error()) {
+    <p class="text-xs text-red-500">{{ error() }}</p>
+  }
+
+  <div class="space-y-3">
+    @for (n of notifications(); track n._id) {
+      <div class="flex items-start gap-3 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+        <mat-icon class="text-base"
+          [class.text-emerald-500]="n.status === 'sent'"
+          [class.text-red-500]="n.status === 'failed'"
+          [class.text-amber-500]="n.status === 'queued'">{{ statusIcon(n.status) }}</mat-icon>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{{ n.subject }}</p>
+          <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-2">{{ n.body }}</p>
+          <p class="text-[10px] text-slate-400 mt-1">{{ n.createdAt | date:'medium' }} · {{ n.status }}</p>
+        </div>
+      </div>
+    } @empty {
+      @if (!loading()) {
+        <p class="text-xs text-slate-400">No notifications yet.</p>
+      }
+    }
+  </div>
+
+  @if (total() > pageSize) {
+    <div class="flex items-center justify-between pt-2">
+      <button (click)="prevPage()" [disabled]="page() === 1"
+        class="text-xs font-bold text-slate-500 disabled:opacity-40 bg-transparent border-none cursor-pointer">← Prev</button>
+      <span class="text-[10px] text-slate-400">Page {{ page() }}</span>
+      <button (click)="nextPage()" [disabled]="page() * pageSize >= total()"
+        class="text-xs font-bold text-slate-500 disabled:opacity-40 bg-transparent border-none cursor-pointer">Next →</button>
+    </div>
+  }
+</div>

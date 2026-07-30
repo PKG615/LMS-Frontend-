@@ -1,0 +1,524 @@
+<!-- Welcome Hero -->
+<div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-brand-600 via-indigo-600 to-indigo-800 text-white p-6 md:p-8 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+  <div class="space-y-2">
+    <span class="bg-white/15 backdrop-blur-md text-cyan-200 text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full inline-block">Enterprise Academy Member</span>
+    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">Welcome back, {{ state.profile().fullName }}!</h1>
+    <p class="text-slate-200 text-sm md:text-base max-w-lg font-light leading-relaxed">
+      Your current learning streak is <strong class="text-cyan-300">7 consecutive days</strong>. You have 2 assignments pending review and a live class in 10 minutes.
+    </p>
+  </div>
+  <button (click)="navigateTo('my-learning')" class="bg-white hover:bg-slate-100 text-indigo-900 text-xs font-bold px-5 py-3 rounded-2xl shadow-lg hover:shadow-xl transition-all shrink-0 flex items-center gap-2">
+    <mat-icon class="text-brand-500">play_circle_filled</mat-icon>
+    Resume: Enterprise Angular
+  </button>
+  <div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-cyan-400/10 blur-2xl"></div>
+</div>
+
+<!-- Statistics Cards Grid -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+  <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
+    <span class="p-3.5 rounded-xl bg-brand-50 dark:bg-brand-950/40 text-brand-500"><mat-icon>school</mat-icon></span>
+    <div>
+      <span class="text-xs text-slate-500 dark:text-slate-400 block font-medium">Courses Enrolled</span>
+      <p class="text-xl md:text-2xl font-bold tracking-tight">{{ state.courses().length }}</p>
+    </div>
+  </div>
+  <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
+    <span class="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-500"><mat-icon>history_toggle_off</mat-icon></span>
+    <div>
+      <span class="text-xs text-slate-500 dark:text-slate-400 block font-medium">Hours Learned</span>
+      <p class="text-xl md:text-2xl font-bold tracking-tight">48.5h</p>
+    </div>
+  </div>
+  <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
+    <span class="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-500"><mat-icon>pending_actions</mat-icon></span>
+    <div>
+      <span class="text-xs text-slate-500 dark:text-slate-400 block font-medium">Assignments Due</span>
+      <p class="text-xl md:text-2xl font-bold tracking-tight">{{ pendingAssignmentsCount() }}</p>
+    </div>
+  </div>
+  <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
+    <span class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-500"><mat-icon>workspace_premium</mat-icon></span>
+    <div>
+      <span class="text-xs text-slate-500 dark:text-slate-400 block font-medium">Certificates Earned</span>
+      <p class="text-xl md:text-2xl font-bold tracking-tight">3</p>
+    </div>
+  </div>
+</div>
+
+<!-- Dashboard Sub-Tabs Navigation -->
+<div class="flex items-center gap-1 bg-slate-150 dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200/40 dark:border-slate-800/45 w-max max-w-full overflow-x-auto">
+  <button (click)="dashboardTab.set('overview')"
+          [class]="'px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer border-none shrink-0 ' + 
+                   (dashboardTab() === 'overview' ? 'bg-white dark:bg-slate-800 text-brand-600 dark:text-cyan-400 shadow-sm' : 'bg-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300')" type="button">
+    <mat-icon class="text-sm">analytics</mat-icon> Overview
+  </button>
+  <button (click)="dashboardTab.set('my-courses')"
+          [class]="'px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer border-none shrink-0 ' + 
+                   (dashboardTab() === 'my-courses' ? 'bg-white dark:bg-slate-800 text-brand-600 dark:text-cyan-400 shadow-sm' : 'bg-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300')" type="button">
+    <mat-icon class="text-sm">school</mat-icon> My Enrolled Courses ({{ state.courses().length }})
+  </button>
+  <button (click)="dashboardTab.set('wishlist')"
+          [class]="'px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer border-none shrink-0 ' + 
+                   (dashboardTab() === 'wishlist' ? 'bg-white dark:bg-slate-800 text-brand-600 dark:text-cyan-400 shadow-sm' : 'bg-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300')" type="button">
+    <mat-icon class="text-sm">favorite</mat-icon> Wishlist ({{ wishlistCourses().length }})
+  </button>
+  <button (click)="dashboardTab.set('recently-viewed')"
+          [class]="'px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer border-none shrink-0 ' + 
+                   (dashboardTab() === 'recently-viewed' ? 'bg-white dark:bg-slate-800 text-brand-600 dark:text-cyan-400 shadow-sm' : 'bg-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300')" type="button">
+    <mat-icon class="text-sm">history</mat-icon> Recently Viewed ({{ recentlyViewedCourses().length }})
+  </button>
+</div>
+
+@if (dashboardTab() === 'overview') {
+<!-- Main Dashboard Split Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  
+  <!-- Left Side: Courses & Skill Progress -->
+  <div class="lg:col-span-2 space-y-8">
+    
+    <!-- Continue Learning Course List -->
+    <div class="space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-lg text-slate-800 dark:text-slate-200">Continue Learning</h3>
+        <button (click)="navigateTo('my-learning')" class="text-brand-600 hover:text-brand-700 dark:text-brand-400 text-xs font-semibold">View All Courses</button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        @for (c of state.courses(); track c.id) {
+          <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm overflow-hidden flex flex-col group hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 transition-all">
+            <div class="h-36 relative overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0">
+              <img [src]="c.thumbnail" referrerpolicy="no-referrer" alt="Course" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <span class="absolute top-3 left-3 bg-slate-900/75 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-md">{{ c.category }}</span>
+            </div>
+            <div class="p-4 flex-1 flex flex-col justify-between space-y-4">
+              <div class="space-y-1">
+                <h4 class="font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-brand-500 dark:group-hover:text-brand-400 transition-colors line-clamp-1">{{ c.title }}</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">Next: <span class="font-medium text-slate-700 dark:text-slate-300">{{ c.nextLesson }}</span></p>
+              </div>
+              <div class="space-y-1.5">
+                <div class="flex justify-between text-[11px] text-slate-500">
+                  <span>Progress ({{ c.progress }}%)</span>
+                  <span>{{ c.completedHours }} / {{ c.totalHours }} hrs</span>
+                </div>
+                <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                  <div class="h-full bg-brand-500 rounded-full" [style.width.%]="c.progress"></div>
+                </div>
+              </div>
+              <div class="flex items-center justify-between pt-1 border-t border-slate-100 dark:border-slate-800/60 text-xs shrink-0">
+                <div class="flex items-center gap-2">
+                  <img [src]="c.instructorImage" referrerpolicy="no-referrer" alt="Instructor" class="w-5.5 h-5.5 rounded-full object-cover" />
+                  <span class="text-slate-500 font-medium">{{ c.instructor }}</span>
+                </div>
+                <button (click)="navigateTo('my-learning')" class="text-brand-600 hover:text-brand-700 dark:text-brand-400 font-bold flex items-center gap-0.5">Resume<mat-icon class="text-xs">chevron_right</mat-icon></button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Learning Analytics Chart Widget -->
+    <app-learning-analytics></app-learning-analytics>
+
+    <!-- Detailed Weekly Hours vs Progress Chart -->
+    <app-learning-analytics-chart></app-learning-analytics-chart>
+
+    <!-- Skill Progress Chart Section -->
+    <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-5">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="font-bold text-lg text-slate-800 dark:text-slate-200">Interactive Skill Matrix</h3>
+          <p class="text-xs text-slate-500">Hover nodes to analyze proficiency levels</p>
+        </div>
+        <span class="bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400 text-xs px-3 py-1 rounded-full font-bold">Updated Today</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+        <!-- SVG Polygon Skill Radar Chart -->
+        <div class="flex justify-center relative">
+          <svg viewBox="0 0 200 200" class="w-48 h-48 md:w-56 md:h-56">
+            <!-- Grid rings -->
+            <circle cx="100" cy="100" r="80" stroke="#94a3b8" stroke-dasharray="3,3" stroke-width="0.75" fill="none" opacity="0.3"/>
+            <circle cx="100" cy="100" r="60" stroke="#94a3b8" stroke-dasharray="3,3" stroke-width="0.75" fill="none" opacity="0.3"/>
+            <circle cx="100" cy="100" r="40" stroke="#94a3b8" stroke-dasharray="3,3" stroke-width="0.75" fill="none" opacity="0.3"/>
+            <circle cx="100" cy="100" r="20" stroke="#94a3b8" stroke-dasharray="3,3" stroke-width="0.75" fill="none" opacity="0.3"/>
+            
+            <!-- Axes lines -->
+            <line x1="100" y1="20" x2="100" y2="180" stroke="#94a3b8" stroke-width="0.75" opacity="0.3"/>
+            <line x1="20" y1="100" x2="180" y2="100" stroke="#94a3b8" stroke-width="0.75" opacity="0.3"/>
+            <line x1="43.4" y1="43.4" x2="156.6" y2="156.6" stroke="#94a3b8" stroke-width="0.75" opacity="0.3"/>
+            <line x1="43.4" y1="156.6" x2="156.6" y2="43.4" stroke="#94a3b8" stroke-width="0.75" opacity="0.3"/>
+
+            <!-- Skill Polygon (Figma, Tailwind, Angular, System Architecture, UI/UX Design, Data Visualizations) -->
+            <polygon points="100,32 155,68 164,100 140,140 60,140 40,100" 
+                     fill="url(#radarGrad)" fill-opacity="0.25" stroke="#0ea5e9" stroke-width="2" />
+            
+            <!-- Gradients definition -->
+            <defs>
+              <radialGradient id="radarGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#38bdf8"/>
+                <stop offset="100%" stop-color="#4f46e5"/>
+              </radialGradient>
+            </defs>
+
+            <!-- Node markers with hover reactions -->
+            <circle cx="100" cy="32" r="5" class="fill-brand-500 stroke-white cursor-pointer hover:scale-150 transition-transform" (mouseenter)="hoverSkill('Angular Signals', '95% Mastery')" />
+            <circle cx="155" cy="68" r="5" class="fill-brand-500 stroke-white cursor-pointer hover:scale-150 transition-transform" (mouseenter)="hoverSkill('System Design', '85% Proficiency')" />
+            <circle cx="164" cy="100" r="5" class="fill-brand-500 stroke-white cursor-pointer hover:scale-150 transition-transform" (mouseenter)="hoverSkill('Tailwind CSS', '98% Expert')" />
+            <circle cx="140" cy="140" r="5" class="fill-brand-500 stroke-white cursor-pointer hover:scale-150 transition-transform" (mouseenter)="hoverSkill('Figma Prototyping', '90% Senior')" />
+            <circle cx="60" cy="140" r="5" class="fill-brand-500 stroke-white cursor-pointer hover:scale-150 transition-transform" (mouseenter)="hoverSkill('UI/UX Research', '92% Expert')" />
+            <circle cx="40" cy="100" r="5" class="fill-brand-500 stroke-white cursor-pointer hover:scale-150 transition-transform" (mouseenter)="hoverSkill('Data SVG Interpolation', '80% Competent')" />
+
+            <!-- Label texts on Axes -->
+            <text x="100" y="15" text-anchor="middle" class="text-[8px] fill-slate-500 font-bold">Angular</text>
+            <text x="175" y="65" text-anchor="start" class="text-[8px] fill-slate-500 font-bold">Systems</text>
+            <text x="175" y="105" text-anchor="start" class="text-[8px] fill-slate-500 font-bold">Tailwind</text>
+            <text x="145" y="152" text-anchor="middle" class="text-[8px] fill-slate-500 font-bold">Figma</text>
+            <text x="55" y="152" text-anchor="middle" class="text-[8px] fill-slate-500 font-bold">UI/UX</text>
+            <text x="25" y="105" text-anchor="end" class="text-[8px] fill-slate-500 font-bold">Data SVG</text>
+          </svg>
+
+          <!-- Interactive Tooltip Overlay -->
+          <div class="absolute bottom-2 bg-slate-900/95 backdrop-blur-md text-white text-xs px-3.5 py-2 rounded-xl border border-slate-700 shadow-xl pointer-events-none text-center">
+            <p class="font-bold text-cyan-300">{{ activeHoveredSkill() }}</p>
+            <p class="text-[10px] text-slate-300">{{ activeHoveredProficiency() }}</p>
+          </div>
+        </div>
+
+        <!-- Details and progress metrics list -->
+        <div class="space-y-4">
+          <h4 class="font-bold text-sm text-slate-800 dark:text-slate-200">Proficiency Milestones</h4>
+          <div class="space-y-3.5">
+            <div class="space-y-1">
+              <div class="flex justify-between text-xs font-medium">
+                <span>Frontend Core (Signals, SSR)</span>
+                <span class="text-brand-500 font-bold">95%</span>
+              </div>
+              <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full">
+                <div class="h-full bg-brand-500 rounded-full" style="width: 95%"></div>
+              </div>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between text-xs font-medium">
+                <span>System Layout & Component Architecture</span>
+                <span class="text-indigo-500 font-bold">90%</span>
+              </div>
+              <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full">
+                <div class="h-full bg-indigo-500 rounded-full" style="width: 90%"></div>
+              </div>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between text-xs font-medium">
+                <span>Generative AI Orchestration & Key Shielding</span>
+                <span class="text-cyan-500 font-bold">80%</span>
+              </div>
+              <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full">
+                <div class="h-full bg-cyan-500 rounded-full" style="width: 80%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommended Courses Carousel Section -->
+    <div class="space-y-4">
+      <h3 class="font-bold text-lg text-slate-800 dark:text-slate-200">Recommended for You</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        @for (rc of state.recommendedCourses(); track rc.id) {
+          <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md transition-all">
+            <div class="h-28 relative">
+              <img [src]="rc.image" referrerpolicy="no-referrer" alt="Recommend" class="w-full h-full object-cover" />
+              <span class="absolute bottom-2.5 right-2.5 bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-0.5"><mat-icon class="text-xs text-amber-400">star</mat-icon> {{ rc.rating }}</span>
+            </div>
+            <div class="p-4 space-y-3.5 flex-1 flex flex-col justify-between">
+              <div>
+                <h4 class="font-bold text-xs text-slate-800 dark:text-slate-200 line-clamp-2 leading-relaxed">{{ rc.title }}</h4>
+                <p class="text-[10px] text-slate-500 mt-1">Instructor: {{ rc.instructor }} • {{ rc.duration }}</p>
+              </div>
+              <button [disabled]="rc.enrolled" (click)="state.enrollInRecommended(rc.id)"
+                      [class]="'w-full py-2 rounded-xl text-xs font-bold transition-all shrink-0 ' + 
+                               (rc.enrolled ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed' : 'bg-brand-50 dark:bg-brand-950/40 text-brand-600 dark:text-brand-400 hover:bg-brand-100 dark:hover:bg-brand-900/60')">
+                {{ rc.enrolled ? 'Enrolled ✓' : 'Instant Enroll' }}
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right Side: Live Classes, Deadlines, Badges, Activity Feed -->
+  <div class="space-y-8">
+    
+    <!-- Live Classes Timeline -->
+    <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Upcoming Live Classes</h3>
+        <button (click)="navigateTo('calendar')" class="text-xs text-brand-600 dark:text-brand-400 font-semibold">Calendar</button>
+      </div>
+      
+      <div class="space-y-4">
+        @for (lc of state.liveClasses(); track lc.id) {
+          <div class="p-3 rounded-xl border border-slate-100 dark:border-slate-800 flex justify-between items-center gap-2"
+               [class.bg-brand-50/20]="lc.status === 'live'" [class.border-brand-200]="lc.status === 'live'">
+            <div class="space-y-1 overflow-hidden">
+              <div class="flex items-center gap-2">
+                @if (lc.status === 'live') {
+                  <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+                  <span class="text-[10px] text-rose-500 font-black tracking-wide uppercase">LIVE NOW</span>
+                } @else {
+                  <span class="text-[10px] text-slate-400 font-bold uppercase">Upcoming Slot</span>
+                }
+              </div>
+              <h4 class="font-bold text-xs text-slate-800 dark:text-slate-200 truncate">{{ lc.title }}</h4>
+              <p class="text-[10px] text-slate-500">By {{ lc.instructor }} • {{ lc.time }}</p>
+            </div>
+            
+            @if (lc.status === 'live' && lc.roomUrl) {
+              <a [href]="lc.roomUrl" target="_blank" class="bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg shrink-0 flex items-center gap-1">
+                <mat-icon class="text-xs">video_call</mat-icon> Join
+              </a>
+            } @else {
+              <button (click)="remindMe(lc.title)" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-850 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 text-[10px] font-bold px-3 py-1.5 rounded-lg shrink-0 flex items-center gap-1">
+                <mat-icon class="text-xs">notifications_none</mat-icon> Alert
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Upcoming Assignment Deadlines -->
+    <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Assignment Deadlines</h3>
+        <button (click)="navigateTo('assignments')" class="text-xs text-brand-600 dark:text-brand-400 font-semibold">View All</button>
+      </div>
+      
+      <div class="space-y-3.5">
+        @for (a of state.assignments() | slice:0:3; track a.id) {
+          <div class="flex justify-between items-start gap-4">
+            <div class="space-y-1 overflow-hidden">
+              <h4 class="font-bold text-xs text-slate-800 dark:text-slate-200 truncate leading-snug">{{ a.title }}</h4>
+              <p class="text-[10px] text-slate-500 truncate">{{ a.course }}</p>
+              <p class="text-[10px] text-rose-500 font-semibold">Due: {{ a.dueDate }}</p>
+            </div>
+            <span [class]="'text-[9px] font-bold px-2 py-0.5 rounded-full uppercase shrink-0 ' + 
+                         (a.status === 'Graded' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400' :
+                          a.status === 'Submitted' ? 'bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400' :
+                          a.status === 'In Progress' ? 'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400' :
+                          'bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:text-rose-400')">
+              {{ a.status }}
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Achievement Badges Card -->
+    <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+      <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Recent Milestones</h3>
+      <div class="grid grid-cols-2 gap-3">
+        @for (b of state.badges(); track b.id) {
+          <div class="p-3 rounded-xl border border-slate-100 dark:border-slate-800 text-center space-y-2 flex flex-col items-center justify-between"
+               [class.opacity-50]="b.unlockedAt === 'Pending'">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr flex items-center justify-center text-white shadow-inner"
+                 [class]="b.color">
+              <mat-icon>{{ b.icon }}</mat-icon>
+            </div>
+            <div>
+              <p class="font-bold text-xs text-slate-800 dark:text-slate-200">{{ b.name }}</p>
+              <p class="text-[9px] text-slate-400 mt-0.5">{{ b.unlockedAt }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Recent Activity Feed -->
+    <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+      <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Recent System Activity</h3>
+      <div class="space-y-4 relative pl-3 border-l-2 border-slate-100 dark:border-slate-800">
+        @for (act of state.activities(); track act.id) {
+          <div class="relative space-y-0.5">
+            <!-- Bullet marker -->
+            <span class="absolute -left-5 top-1.5 w-2.5 h-2.5 rounded-full bg-white dark:bg-slate-900 border-2" [class]="'border-' + getThemeColor() + '-500'"></span>
+            <p class="text-xs text-slate-700 dark:text-slate-300 font-medium">{{ act.text }}</p>
+            <span class="text-[10px] text-slate-400 dark:text-slate-500 block">{{ act.time }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+
+</div>
+}
+
+<!-- Sub-Tab: My Courses -->
+@if (dashboardTab() === 'my-courses') {
+  <div class="space-y-6 animate-fade-in">
+    <div class="flex justify-between items-center">
+      <div>
+        <h2 class="text-xl font-black text-slate-800 dark:text-slate-100">Enrolled Masterclass Progress</h2>
+        <p class="text-xs text-slate-500 mt-1">Track your active interactive syllabus milestones and complete tasks</p>
+      </div>
+      <button (click)="navigateTo('courses-catalog')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm flex items-center gap-1.5 cursor-pointer border-none" type="button">
+        <mat-icon class="text-sm">explore</mat-icon> Explore Directory
+      </button>
+    </div>
+
+    @if (state.courses().length === 0) {
+      <div class="p-12 text-center bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl space-y-4">
+        <span class="p-4 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-full inline-block"><mat-icon class="text-3xl">school</mat-icon></span>
+        <p class="text-sm font-bold text-slate-700 dark:text-slate-200">No Enrolled Courses Found</p>
+        <p class="text-xs text-slate-500 max-w-sm mx-auto">You have not registered for any active masterclass syllabus tracks yet. Browse our professional catalog directory to begin your career ascendancy.</p>
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @for (c of state.courses(); track c.id) {
+          <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl flex flex-col justify-between hover:shadow-md transition-all group">
+            <div class="flex gap-4">
+              <img [src]="c.thumbnail" referrerpolicy="no-referrer" alt="Course" class="w-20 h-20 rounded-2xl object-cover shrink-0" />
+              <div class="space-y-1">
+                <span class="text-[9px] font-bold text-indigo-600 dark:text-cyan-400 uppercase tracking-wide">{{ c.category }}</span>
+                <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-brand-500 transition-colors leading-tight line-clamp-1">{{ c.title }}</h3>
+                <p class="text-[10px] text-slate-400">Instructor: {{ c.instructor }}</p>
+              </div>
+            </div>
+
+            <div class="space-y-2 mt-5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-500 font-medium">Learning Progress:</span>
+                <span class="font-bold text-brand-600 dark:text-cyan-400">{{ c.progress }}% Complete</span>
+              </div>
+              <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-850 rounded-full overflow-hidden">
+                <div class="h-full bg-brand-500 rounded-full" [style.width.%]="c.progress"></div>
+              </div>
+              <p class="text-[10px] text-slate-500">Next Track: <span class="font-semibold text-slate-700 dark:text-slate-300">{{ c.nextLesson }}</span></p>
+            </div>
+
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800 mt-4">
+              <span class="text-[10px] text-slate-400 font-medium">{{ c.completedHours }} / {{ c.totalHours }} Hours Spent</span>
+              <button (click)="selectedPlayerCourseId.set(c.id); navigateTo('my-learning')" class="bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-750 text-indigo-600 dark:text-cyan-400 text-xs font-bold px-3.5 py-2 rounded-xl cursor-pointer border-none" type="button">
+                Resume Study
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}
+
+<!-- Sub-Tab: Wishlist -->
+@if (dashboardTab() === 'wishlist') {
+  <div class="space-y-6 animate-fade-in">
+    <div class="flex justify-between items-center">
+      <div>
+        <h2 class="text-xl font-black text-slate-800 dark:text-slate-100">My Saved Syllabus Wishlist</h2>
+        <p class="text-xs text-slate-500 mt-1">Review the top courses you have bookmarked for future career acceleration</p>
+      </div>
+    </div>
+
+    @if (wishlistCourses().length === 0) {
+      <div class="p-12 text-center bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl space-y-4">
+        <span class="p-4 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-full inline-block"><mat-icon class="text-3xl">favorite_border</mat-icon></span>
+        <p class="text-sm font-bold text-slate-700 dark:text-slate-200">Your Wishlist is Empty</p>
+        <p class="text-xs text-slate-500 max-w-sm mx-auto">Bookmark high-fidelity syllabus packages in our course catalog to build your study queue.</p>
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (c of wishlistCourses(); track c.id) {
+          <div class="rounded-2xl border border-slate-200/50 dark:border-slate-800/50 bg-white dark:bg-slate-900 overflow-hidden hover:shadow-md transition-all flex flex-col justify-between group">
+            <div class="relative aspect-video overflow-hidden">
+              <img [src]="c.thumbnail" referrerpolicy="no-referrer" alt="Course" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+              <span class="absolute top-3 left-3 bg-slate-900/80 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase">{{ c.level }}</span>
+              <button (click)="state.toggleWishlist(c.id)" class="absolute top-3 right-3 p-2 rounded-full bg-white/90 dark:bg-slate-900/90 hover:bg-rose-50 text-rose-500 shadow-md cursor-pointer border-none flex items-center justify-center" type="button">
+                <mat-icon class="text-sm">favorite</mat-icon>
+              </button>
+            </div>
+
+            <div class="p-4 space-y-4 flex-1 flex flex-col justify-between">
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-[9px] font-extrabold text-indigo-600 dark:text-cyan-400 uppercase">{{ c.category }}</span>
+                  <span class="text-[10px] text-slate-400 font-bold font-mono">{{ c.duration }}</span>
+                </div>
+                <h3 class="font-bold text-xs md:text-sm text-slate-800 dark:text-slate-200 leading-tight line-clamp-2">{{ c.title }}</h3>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <img [src]="c.instructorImage" referrerpolicy="no-referrer" alt="Instructor" class="w-6.5 h-6.5 rounded-full object-cover" />
+                <span class="text-[10px] text-slate-500 font-medium">{{ c.instructor }}</span>
+              </div>
+
+              <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 mt-2">
+                <span class="text-sm font-extrabold text-slate-900 dark:text-white">${{ c.price }}</span>
+                <div class="flex gap-2">
+                  <button (click)="state.viewCourseDetails(c.id)" class="px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800 text-[10px] font-bold text-slate-700 dark:text-slate-300 cursor-pointer" type="button">
+                    Details
+                  </button>
+                  <button (click)="state.enrollInCatalogCourse(c.id)" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold shadow-sm cursor-pointer border-none" type="button">
+                    Enroll
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}
+
+<!-- Sub-Tab: Recently Viewed -->
+@if (dashboardTab() === 'recently-viewed') {
+  <div class="space-y-6 animate-fade-in">
+    <div class="flex justify-between items-center">
+      <div>
+        <h2 class="text-xl font-black text-slate-800 dark:text-slate-100">Recently Viewed Syllabus</h2>
+        <p class="text-xs text-slate-500 mt-1">Pick up where you left off checking program outlines and instructor bios</p>
+      </div>
+    </div>
+
+    @if (recentlyViewedCourses().length === 0) {
+      <div class="p-12 text-center bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl space-y-4">
+        <span class="p-4 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-full inline-block"><mat-icon class="text-3xl">history</mat-icon></span>
+        <p class="text-sm font-bold text-slate-700 dark:text-slate-200">No History Available</p>
+        <p class="text-xs text-slate-500 max-w-sm mx-auto">You have not viewed any catalog details pages in this session yet. Explore the Course Catalog and check our elite content details.</p>
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (c of recentlyViewedCourses(); track c.id) {
+          <div class="rounded-2xl border border-slate-200/50 dark:border-slate-800/50 bg-white dark:bg-slate-900 overflow-hidden hover:shadow-md transition-all flex flex-col justify-between group">
+            <div class="relative aspect-video overflow-hidden">
+              <img [src]="c.thumbnail" referrerpolicy="no-referrer" alt="Course" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+              <span class="absolute top-3 left-3 bg-slate-900/80 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase">{{ c.level }}</span>
+            </div>
+
+            <div class="p-4 space-y-4 flex-1 flex flex-col justify-between">
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-[9px] font-extrabold text-indigo-600 dark:text-cyan-400 uppercase">{{ c.category }}</span>
+                  <span class="text-[10px] text-slate-400 font-bold font-mono">{{ c.duration }}</span>
+                </div>
+                <h3 class="font-bold text-xs md:text-sm text-slate-800 dark:text-slate-200 leading-tight line-clamp-2">{{ c.title }}</h3>
+              </div>
+
+              <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 mt-2">
+                <span class="text-sm font-extrabold text-slate-900 dark:text-white">${{ c.price }}</span>
+                <button (click)="state.viewCourseDetails(c.id)" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-850 dark:bg-slate-800 dark:hover:bg-slate-750 text-white text-[10px] font-bold shadow-sm cursor-pointer border-none" type="button">
+                  View Syllabus Details
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}

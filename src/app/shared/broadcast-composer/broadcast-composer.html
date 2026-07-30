@@ -1,0 +1,32 @@
+<div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm p-5 space-y-4">
+  <h3 class="text-sm font-black text-slate-900 dark:text-slate-50">Broadcast Announcement</h3>
+  <p class="text-[11px] text-slate-500">Paste recipient user IDs (comma-separated).</p>
+
+  <input [ngModel]="recipientIdsInput()" (ngModelChange)="recipientIdsInput.set($event)"
+    placeholder="userId1, userId2, userId3"
+    class="w-full text-xs rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850 p-3" />
+
+  <input [ngModel]="subject()" (ngModelChange)="subject.set($event)" placeholder="Subject"
+    class="w-full text-xs rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850 p-3" />
+
+  <textarea [ngModel]="body()" (ngModelChange)="body.set($event)" rows="4" placeholder="Message body"
+    class="w-full text-xs rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850 p-3"></textarea>
+
+  @if (result()) {
+    <p class="text-xs" [class.text-emerald-500]="result()!.ok" [class.text-red-500]="!result()!.ok">{{ result()!.message }}</p>
+  }
+
+  <div class="flex items-center gap-3">
+    <button (click)="send()" [disabled]="sending()"
+      class="px-4 py-2 rounded-xl bg-brand-500 hover:bg-brand-600 disabled:opacity-50 text-white text-xs font-bold border-none cursor-pointer">
+      {{ sending() ? 'Sending…' : 'Send Announcement' }}
+    </button>
+
+    @if (isAdmin()) {
+      <button (click)="retryFailed()"
+        class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold border-none cursor-pointer">
+        Retry Failed Notifications
+      </button>
+    }
+  </div>
+</div>

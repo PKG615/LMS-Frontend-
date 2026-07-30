@@ -1,0 +1,6 @@
+{
+  "name": "Enterprise LMS Dashboard",
+  "description": "A premium, high-fidelity Enterprise Learning Management System Dashboard UI featuring rich learning statistics, interactive calendars, courses, live sessions, profile editor, and comprehensive security settings.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

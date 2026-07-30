@@ -1,0 +1,105 @@
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+  @if (hasAccess() === null) {
+    <p class="col-span-4 text-xs text-slate-400">Checking access…</p>
+  } @else if (hasAccess() === false) {
+    <div class="col-span-4 rounded-2xl border border-amber-300 bg-amber-50 dark:bg-amber-950/20 p-6 text-center">
+      <p class="text-sm font-bold text-amber-700 dark:text-amber-400">You don't have access to this course yet.</p>
+      <p class="text-xs text-amber-600 mt-1">Enroll first from the course detail page to unlock the player.</p>
+    </div>
+  } @else {
+    <!-- Curriculum sidebar -->
+    <div class="lg:col-span-1 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 p-3 space-y-3 max-h-[70vh] overflow-y-auto">
+      @for (module of modules(); track module._id) {
+        <div>
+          <p class="text-[10px] font-black uppercase tracking-wider text-slate-400 px-2 py-1">{{ module.title }}</p>
+          @for (lesson of module.lessons; track lesson._id) {
+            <button (click)="selectLesson(module, lesson)"
+              class="w-full text-left px-2 py-2 rounded-lg text-xs flex items-center gap-2 border-none cursor-pointer"
+              [class.bg-brand-50]="selectedLessonId() === lesson._id"
+              [class.dark:bg-brand-950]="selectedLessonId() === lesson._id"
+              [class.text-slate-600]="selectedLessonId() !== lesson._id"
+              [class.bg-transparent]="selectedLessonId() !== lesson._id">
+              <span class="w-4 text-center">{{ isLessonComplete(lesson._id) ? '✅' : '○' }}</span>
+              <span class="truncate">{{ lesson.title }}</span>
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Content pane -->
+    <div class="lg:col-span-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 p-5 space-y-4 min-h-[400px]">
+      @if (error()) { <p class="text-xs text-red-500">{{ error() }}</p> }
+
+      @if (currentLesson(); as lesson) {
+        <h2 class="text-base font-black text-slate-900 dark:text-slate-50">{{ lesson.title }}</h2>
+
+        @switch (lesson.type) {
+          @case ('video') {
+            @if (streamUrl()) {
+              <video [src]="streamUrl()" controls class="w-full rounded-xl bg-black" (ended)="markComplete()"></video>
+            } @else {
+              <p class="text-xs text-slate-400">Loading video…</p>
+            }
+          }
+          @case ('pdf') {
+            @if (lesson.pdfFile) {
+              <iframe [src]="lesson.pdfFile" class="w-full h-[500px] rounded-xl border border-slate-200 dark:border-slate-800"></iframe>
+            } @else {
+              <p class="text-xs text-slate-400">No PDF uploaded for this lesson yet.</p>
+            }
+            <button (click)="markComplete()"
+              class="px-4 py-2 rounded-xl bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold border-none cursor-pointer">
+              Mark as Read
+            </button>
+          }
+          @case ('text') {
+            <div class="prose prose-sm dark:prose-invert max-w-none text-sm text-slate-700 dark:text-slate-300">
+              {{ lesson.textContent }}
+            </div>
+            <button (click)="markComplete()"
+              class="px-4 py-2 rounded-xl bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold border-none cursor-pointer">
+              Mark as Complete
+            </button>
+          }
+          @case ('quiz') {
+            @if (lesson.quiz) {
+              <div class="space-y-4">
+                <p class="text-xs text-slate-500">Passing score: {{ lesson.quiz.passingScore }}%</p>
+                @for (q of lesson.quiz.questions; track q._id) {
+                  <div class="p-4 rounded-xl border border-slate-100 dark:border-slate-800 space-y-2">
+                    <p class="text-xs font-bold text-slate-800 dark:text-slate-200">{{ q.question }}</p>
+                    @for (opt of q.options; track $index) {
+                      <button type="button" (click)="selectQuizAnswer(q._id ?? '', $index)"
+                        class="w-full text-left px-3 py-2 rounded-lg text-xs border cursor-pointer"
+                        [class.border-brand-400]="quizAnswers()[q._id ?? ''] === $index"
+                        [class.bg-brand-50]="quizAnswers()[q._id ?? ''] === $index"
+                        [class.border-slate-200]="quizAnswers()[q._id ?? ''] !== $index"
+                        [class.dark:border-slate-800]="quizAnswers()[q._id ?? ''] !== $index"
+                        [class.bg-emerald-50]="quizSubmitted() && opt.isCorrect"
+                        [disabled]="quizSubmitted()">
+                        {{ opt.text }}
+                      </button>
+                    }
+                  </div>
+                }
+                @if (!quizSubmitted()) {
+                  <button (click)="submitQuiz()"
+                    class="px-4 py-2 rounded-xl bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold border-none cursor-pointer">
+                    Submit Quiz
+                  </button>
+                } @else {
+                  <p class="text-sm font-bold" [class.text-emerald-500]="quizScore()! >= lesson.quiz.passingScore" [class.text-red-500]="quizScore()! < lesson.quiz.passingScore">
+                    Score: {{ quizScore() }}% — {{ quizScore()! >= lesson.quiz.passingScore ? 'Passed!' : 'Try again next time.' }}
+                  </p>
+                }
+              </div>
+            }
+          }
+        }
+      } @else {
+        <p class="text-xs text-slate-400">Select a lesson to begin.</p>
+      }
+    </div>
+  }
+</div>

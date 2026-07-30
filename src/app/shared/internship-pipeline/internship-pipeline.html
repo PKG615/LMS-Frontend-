@@ -1,0 +1,41 @@
+<div class="space-y-4">
+  <div class="flex items-center justify-between">
+    <h3 class="text-sm font-black text-slate-900 dark:text-slate-50">Applicant Pipeline</h3>
+    @if (loading()) { <span class="text-[10px] text-slate-400">Loading…</span> }
+  </div>
+  @if (error()) {
+    <p class="text-xs text-red-500">{{ error() }}</p>
+  }
+
+  <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-3">
+    @for (stage of stages; track stage) {
+      <div class="rounded-2xl bg-slate-50 dark:bg-slate-850 border border-slate-200/50 dark:border-slate-800/50 p-3 min-h-[200px]">
+        <p class="text-[10px] font-black uppercase tracking-wider text-slate-500 mb-2">
+          {{ stageLabel(stage) }} ({{ columns()[stage].length }})
+        </p>
+        <div class="space-y-2">
+          @for (card of columns()[stage]; track card.application._id) {
+            <div class="rounded-xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 p-3 space-y-2">
+              <p class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
+                {{ card.applicant?.name ?? 'Loading…' }}
+              </p>
+              <p class="text-[10px] text-slate-400 truncate">{{ card.applicant?.email }}</p>
+              <p class="text-[10px] text-slate-400">Applied {{ card.application.appliedOn | date:'mediumDate' }}</p>
+              <select
+                class="w-full text-[10px] rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850 p-1.5"
+                [disabled]="movingId() === card.application._id"
+                [value]="card.application.stage"
+                (change)="moveTo(card, $any($event.target).value)">
+                @for (s of stages; track s) {
+                  <option [value]="s">{{ stageLabel(s) }}</option>
+                }
+              </select>
+            </div>
+          } @empty {
+            <p class="text-[10px] text-slate-400 text-center py-4">Empty</p>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

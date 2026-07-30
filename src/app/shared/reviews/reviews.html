@@ -1,0 +1,89 @@
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h3 class="text-lg font-black text-slate-900 dark:text-slate-50">Reviews</h3>
+      <p class="text-xs text-slate-500 mt-0.5">
+        {{ averageRating() | number:'1.1-1' }} average · {{ total() }} review{{ total() === 1 ? '' : 's' }}
+      </p>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <p class="text-xs text-slate-400">Loading reviews…</p>
+  }
+  @if (error()) {
+    <p class="text-xs text-red-500">{{ error() }}</p>
+  }
+
+  @if (currentUser() && !myExistingReview() && editingId() === null) {
+    <div class="rounded-2xl border border-slate-200/60 dark:border-slate-800/60 p-4 space-y-3 bg-slate-50 dark:bg-slate-850">
+      <div class="flex items-center gap-1">
+        @for (star of [1,2,3,4,5]; track star) {
+          <button type="button" (click)="myRating.set(star)" class="border-none bg-transparent cursor-pointer p-0">
+            <mat-icon class="text-lg" [class.text-amber-500]="star <= myRating()" [class.text-slate-300]="star > myRating()">star</mat-icon>
+          </button>
+        }
+      </div>
+      <textarea [ngModel]="myComment()" (ngModelChange)="myComment.set($event)" rows="3" placeholder="Share your experience…"
+        class="w-full text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3"></textarea>
+      <button (click)="submit()" [disabled]="submitting()"
+        class="px-4 py-2 rounded-xl bg-brand-500 hover:bg-brand-600 disabled:opacity-50 text-white text-xs font-bold border-none cursor-pointer">
+        {{ submitting() ? 'Submitting…' : 'Submit Review' }}
+      </button>
+    </div>
+  }
+
+  @if (editingId() !== null) {
+    <div class="rounded-2xl border border-brand-300 dark:border-brand-700 p-4 space-y-3 bg-brand-50/40 dark:bg-brand-950/20">
+      <div class="flex items-center gap-1">
+        @for (star of [1,2,3,4,5]; track star) {
+          <button type="button" (click)="myRating.set(star)" class="border-none bg-transparent cursor-pointer p-0">
+            <mat-icon class="text-lg" [class.text-amber-500]="star <= myRating()" [class.text-slate-300]="star > myRating()">star</mat-icon>
+          </button>
+        }
+      </div>
+      <textarea [ngModel]="myComment()" (ngModelChange)="myComment.set($event)" rows="3"
+        class="w-full text-sm rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3"></textarea>
+      <div class="flex gap-2">
+        <button (click)="submit()" [disabled]="submitting()"
+          class="px-4 py-2 rounded-xl bg-brand-500 hover:bg-brand-600 disabled:opacity-50 text-white text-xs font-bold border-none cursor-pointer">
+          Save Changes
+        </button>
+        <button (click)="cancelEdit()"
+          class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold border-none cursor-pointer">
+          Cancel
+        </button>
+      </div>
+    </div>
+  }
+
+  <div class="space-y-4">
+    @for (review of reviews(); track review._id) {
+      <div class="rounded-2xl border border-slate-200/50 dark:border-slate-800/50 p-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-bold text-slate-800 dark:text-slate-200">{{ review.studentName }}</span>
+            <div class="flex items-center">
+              @for (s of stars(review.rating); track $index) {
+                <mat-icon class="text-sm" [class.text-amber-500]="s" [class.text-slate-300]="!s">star</mat-icon>
+              }
+            </div>
+          </div>
+          <span class="text-[10px] text-slate-400">{{ review.createdAt | date:'mediumDate' }}</span>
+        </div>
+        <p class="text-xs text-slate-600 dark:text-slate-400 mt-2">{{ review.comment }}</p>
+
+        @if (currentUser()?.id === review.studentId) {
+          <div class="flex gap-3 mt-3">
+            <button (click)="startEdit(review)" class="text-[11px] font-bold text-brand-500 bg-transparent border-none cursor-pointer p-0">Edit</button>
+            <button (click)="delete(review)" class="text-[11px] font-bold text-red-500 bg-transparent border-none cursor-pointer p-0">Delete</button>
+          </div>
+        }
+      </div>
+    } @empty {
+      @if (!loading()) {
+        <p class="text-xs text-slate-400">No reviews yet. Be the first to share your experience.</p>
+      }
+    }
+  </div>
+</div>

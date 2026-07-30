@@ -1,0 +1,1099 @@
+          <!-- ==================== INSTRUCTOR PORTAL ==================== -->
+          
+          <!-- Portal Top Title and Profile Info -->
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-slate-200/50 dark:border-slate-800/50">
+            <div>
+              <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest font-mono">Faculty Workspace Portal</span>
+              <h1 class="text-2xl font-black text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
+                <mat-icon class="text-indigo-600">supervisor_account</mat-icon>
+                Instructor: Dr. Evelyn Vance
+              </h1>
+              <p class="text-xs text-slate-500 mt-1">Manage interactive curricula, grade submissions, issue announcements, and review financial growth metrics.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 border border-indigo-100 dark:border-indigo-900/40">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Zoneless Active Session
+              </span>
+            </div>
+          </div>
+
+          <!-- ==================== VIEW 1: OVERVIEW ==================== -->
+          @if (activeInstructorView() === 'overview') {
+            <div class="space-y-6">
+              <!-- Metrics Cards Grid -->
+              <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
+                  <span class="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500"><mat-icon>payments</mat-icon></span>
+                  <div>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 block font-medium">Total Revenue</span>
+                    <p class="text-xl md:text-2xl font-extrabold tracking-tight text-slate-800 dark:text-slate-100">$48,500</p>
+                  </div>
+                </div>
+                <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
+                  <span class="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-500"><mat-icon>people</mat-icon></span>
+                  <div>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 block font-medium">Active Students</span>
+                    <p class="text-xl md:text-2xl font-extrabold tracking-tight text-slate-800 dark:text-slate-100 font-mono">168</p>
+                  </div>
+                </div>
+                <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
+                  <span class="p-3.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-500"><mat-icon>auto_stories</mat-icon></span>
+                  <div>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 block font-medium">My Courses</span>
+                    <p class="text-xl md:text-2xl font-extrabold tracking-tight text-slate-800 dark:text-slate-100 font-mono">4</p>
+                  </div>
+                </div>
+                <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
+                  <span class="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-500"><mat-icon>star</mat-icon></span>
+                  <div>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 block font-medium">Average Rating</span>
+                    <p class="text-xl md:text-2xl font-extrabold tracking-tight text-slate-800 dark:text-slate-100 font-mono">4.8 / 5.0</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- High fidelity SVG revenue chart and announcement -->
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- SVG Chart Card -->
+                <div class="lg:col-span-2 p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+                  <div class="flex justify-between items-center">
+                    <div>
+                      <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Revenue Growth Ledger</h3>
+                      <p class="text-[11px] text-slate-400">Total institutional earnings across past 6 fiscal months</p>
+                    </div>
+                    <span class="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold px-2.5 py-1 rounded-md font-mono">+12.4% MoM</span>
+                  </div>
+                  
+                  <div class="h-48 w-full flex items-center justify-center pt-2">
+                    <!-- Standard High Fidelity Inline SVG Vector Chart -->
+                    <svg class="w-full h-full text-indigo-600 dark:text-cyan-400" viewBox="0 0 500 200" fill="none" preserveAspectRatio="none">
+                      <!-- Grid Lines -->
+                      <line x1="0" y1="40" x2="500" y2="40" stroke="rgba(148,163,184,0.1)" stroke-dasharray="4" />
+                      <line x1="0" y1="90" x2="500" y2="90" stroke="rgba(148,163,184,0.1)" stroke-dasharray="4" />
+                      <line x1="0" y1="140" x2="500" y2="140" stroke="rgba(148,163,184,0.1)" stroke-dasharray="4" />
+                      
+                      <!-- Area Gradient under curves -->
+                      <path d="M 10 180 Q 100 130, 200 110 T 400 60 T 490 30 L 490 180 L 10 180 Z" fill="url(#indigoGrad)" opacity="0.15" />
+                      
+                      <!-- Trend Line -->
+                      <path d="M 10 180 Q 100 130, 200 110 T 400 60 T 490 30" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+                      
+                      <!-- Hotspots / Datapoints -->
+                      <circle cx="10" cy="180" r="5" fill="currentColor" />
+                      <circle cx="100" cy="148" r="5" fill="currentColor" />
+                      <circle cx="200" cy="110" r="5" fill="currentColor" />
+                      <circle cx="300" cy="72" r="5" fill="currentColor" />
+                      <circle cx="400" cy="60" r="5" fill="currentColor" />
+                      <circle cx="490" cy="30" r="6" fill="#10B981" />
+
+                      <defs>
+                        <linearGradient id="indigoGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stop-color="currentColor" />
+                          <stop offset="100%" stop-color="transparent" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                  <div class="flex justify-between items-center text-[10px] font-semibold text-slate-400 font-mono px-1">
+                    <span>Feb</span>
+                    <span>Mar</span>
+                    <span>Apr</span>
+                    <span>May</span>
+                    <span>Jun</span>
+                    <span>Jul (Current)</span>
+                  </div>
+                </div>
+
+                <!-- Live Announcements Preview & Recent Submissions Deck -->
+                <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+                  <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Recent Notices</h3>
+                  <div class="space-y-3">
+                    @for (ann of announcements().slice(0, 2); track ann.id) {
+                      <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800 space-y-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-center">
+                          <span class="text-[9px] font-bold uppercase tracking-wider text-indigo-500 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-full">{{ ann.course }}</span>
+                          <span class="text-[9px] font-mono text-slate-400">{{ ann.date }}</span>
+                        </div>
+                        <h4 class="font-bold text-xs text-slate-700 dark:text-slate-300 line-clamp-1 text-left">{{ ann.title }}</h4>
+                        <p class="text-[10px] text-slate-400 line-clamp-2 leading-relaxed text-left">{{ ann.text }}</p>
+                      </div>
+                    }
+                  </div>
+                  <button (click)="activeInstructorView.set('announcements')" class="w-full py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-indigo-600 dark:text-indigo-400 text-xs font-bold rounded-xl flex items-center justify-center gap-1 cursor-pointer border-none" type="button">
+                    <mat-icon class="text-sm">campaign</mat-icon> Dispatch New Notice
+                  </button>
+                </div>
+              </div>
+
+              <!-- Course Performance Ledger Table -->
+              <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Course Distribution Analytics</h3>
+                    <p class="text-[11px] text-slate-400">Detailed metric summary of published learning paths</p>
+                  </div>
+                  <button (click)="activeInstructorView.set('my-courses')" class="text-xs font-bold text-indigo-600 hover:underline border-none bg-transparent cursor-pointer" type="button">View All Masterclasses</button>
+                </div>
+
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-xs text-slate-500 dark:text-slate-400">
+                    <thead class="bg-slate-50 dark:bg-slate-850 text-[10px] text-slate-400 uppercase tracking-wider font-mono">
+                      <tr>
+                        <th class="p-4 rounded-l-xl">Course Title</th>
+                        <th class="p-4">Category</th>
+                        <th class="p-4">Enrolled Students</th>
+                        <th class="p-4">Average Rating</th>
+                        <th class="p-4">Pricing</th>
+                        <th class="p-4 rounded-r-xl">Syllabus Status</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                      @for (c of state.catalogCourses().slice(0, 4); track c.id) {
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-850/30 transition-colors">
+                          <td class="p-4 font-bold text-slate-800 dark:text-slate-200 truncate max-w-[200px]">{{ c.title }}</td>
+                          <td class="p-4"><span class="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold px-2 py-0.5 rounded-full">{{ c.category }}</span></td>
+                          <td class="p-4 font-mono font-bold">{{ c.id === 'c1' ? 84 : c.id === 'c2' ? 45 : c.id === 'c3' ? 29 : 10 }} students</td>
+                          <td class="p-4">
+                            <span class="flex items-center gap-1 text-amber-500 font-bold font-mono">
+                              <mat-icon class="text-xs">star</mat-icon> {{ c.rating | number:'1.1-1' }}
+                            </span>
+                          </td>
+                          <td class="p-4 font-bold text-slate-700 dark:text-slate-300 font-mono">${{ c.price }}</td>
+                          <td class="p-4">
+                            <span class="inline-flex items-center gap-1 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
+                            </span>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- ==================== VIEW 2: MY COURSES ==================== -->
+          @if (activeInstructorView() === 'my-courses') {
+            <!-- Live course builder (real API via CourseService) -->
+            <div class="mb-6">
+              <app-course-builder />
+            </div>
+
+            @if (editingCourseId()) {
+              <div class="space-y-6">
+                <!-- Back header -->
+                <div class="flex items-center gap-3 text-left">
+                  <button (click)="cancelEditCourse()" class="p-2 border border-slate-200 dark:border-slate-850 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-600 dark:text-slate-300 cursor-pointer bg-transparent flex items-center justify-center" type="button" title="Go back to portfolio">
+                    <mat-icon>arrow_back</mat-icon>
+                  </button>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-[9px] bg-indigo-500/10 text-indigo-600 font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider font-mono">Curricula Editor</span>
+                      <span class="text-[10px] text-slate-400 font-mono">Course ID: {{ editingCourse()?.id }}</span>
+                    </div>
+                    <h2 class="text-lg font-black text-slate-800 dark:text-slate-200 mt-1">Syllabus & Course Settings: {{ editingCourse()?.title }}</h2>
+                  </div>
+                </div>
+
+                <!-- Main Split layout: Form on Left, Modules/Curriculum on Right -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start text-left">
+                  
+                  <!-- LEFT COLUMN (7 cols): General Details & Outcomes Form -->
+                  <div class="lg:col-span-7 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 p-6 rounded-3xl shadow-sm space-y-6">
+                    <div>
+                      <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">1. Modify Course Information</h3>
+                      <p class="text-[11px] text-slate-400">Update general parameter values for this curriculum track.</p>
+                    </div>
+
+                    <form [formGroup]="editCourseForm" (ngSubmit)="saveEditCourse()" class="space-y-5">
+                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        
+                        <div class="col-span-full space-y-1">
+                          <label for="edit_course_title" class="text-[10px] uppercase font-bold text-slate-400">Course Title</label>
+                          <input id="edit_course_title" type="text" formControlName="title" class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-100" />
+                        </div>
+
+                        <div class="space-y-1">
+                          <label for="edit_course_category" class="text-[10px] uppercase font-bold text-slate-400">Category Track</label>
+                          <select id="edit_course_category" formControlName="category" class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-100">
+                            <option value="Development">Development</option>
+                            <option value="Design & Business">Design & Business</option>
+                            <option value="Artificial Intelligence">Artificial Intelligence</option>
+                            <option value="Cloud Engineering">Cloud Engineering</option>
+                            <option value="UI/UX Design">UI/UX Design</option>
+                          </select>
+                        </div>
+
+                        <div class="space-y-1">
+                          <label for="edit_course_price" class="text-[10px] uppercase font-bold text-slate-400">Pricing ($ USD)</label>
+                          <input id="edit_course_price" type="number" formControlName="price" class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-100" />
+                        </div>
+
+                        <div class="space-y-1">
+                          <label for="edit_course_level" class="text-[10px] uppercase font-bold text-slate-400">Difficulty Level</label>
+                          <select id="edit_course_level" formControlName="level" class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-100">
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                          </select>
+                        </div>
+
+                        <div class="space-y-1">
+                          <label for="edit_course_language" class="text-[10px] uppercase font-bold text-slate-400">Instruction Language</label>
+                          <select id="edit_course_language" formControlName="language" class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-100">
+                            <option value="English">English</option>
+                            <option value="Spanish">Spanish</option>
+                            <option value="German">German</option>
+                            <option value="French">French</option>
+                          </select>
+                        </div>
+
+                        <div class="space-y-1 col-span-full">
+                          <label for="edit_course_duration" class="text-[10px] uppercase font-bold text-slate-400">Total Course Duration Label</label>
+                          <input id="edit_course_duration" type="text" formControlName="duration" class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-100" placeholder="e.g. 15 Hours" />
+                        </div>
+
+                        <div class="col-span-full space-y-1">
+                          <label for="edit_course_description" class="text-[10px] uppercase font-bold text-slate-400">Syllabus Abstract Description</label>
+                          <textarea id="edit_course_description" formControlName="description" rows="3" class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-100"></textarea>
+                        </div>
+
+                        <div class="col-span-full space-y-1">
+                          <label for="edit_course_outcomes" class="text-[10px] uppercase font-bold text-slate-400">Target Outcomes (Separate with ';')</label>
+                          <input id="edit_course_outcomes" type="text" formControlName="outcomes" class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-100" />
+                        </div>
+
+                        <div class="col-span-full space-y-1">
+                          <label for="edit_course_requirements" class="text-[10px] uppercase font-bold text-slate-400">Prerequisites (Separate with ';')</label>
+                          <input id="edit_course_requirements" type="text" formControlName="requirements" class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-100" />
+                        </div>
+
+                      </div>
+
+                      <div class="flex gap-2 justify-end pt-4 border-t border-slate-100 dark:border-slate-800">
+                        <button type="button" (click)="cancelEditCourse()" class="px-4 py-2 border border-slate-200 dark:border-slate-800 text-xs font-bold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-600 dark:text-slate-300 cursor-pointer bg-transparent">Cancel</button>
+                        <button type="submit" [disabled]="editCourseForm.invalid" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-xs font-bold rounded-lg cursor-pointer border-none flex items-center gap-1">
+                          <mat-icon class="text-xs">save</mat-icon> Commit Course Changes
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+
+                  <!-- RIGHT COLUMN (5 cols): Module Curriculum & Lesson Sorter -->
+                  <div class="lg:col-span-5 space-y-6">
+                    
+                    <!-- Curriculum / Syllabus Management Card -->
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 p-6 rounded-3xl shadow-sm space-y-4">
+                      <div class="flex justify-between items-center">
+                        <div>
+                          <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">2. Curriculum Structure</h3>
+                          <p class="text-[11px] text-slate-400">Manage modules and rearrange active lessons.</p>
+                        </div>
+                        <mat-icon class="text-slate-300">format_list_bulleted</mat-icon>
+                      </div>
+
+                      <!-- Add Module Box -->
+                      <div class="p-3 bg-slate-50 dark:bg-slate-850 rounded-2xl flex gap-2">
+                        <input #newModInput type="text" placeholder="Add module section title..." class="flex-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs px-2.5 py-1.5 rounded-xl text-slate-800 dark:text-slate-100" />
+                        <button (click)="addCourseModule(newModInput.value); newModInput.value = ''" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold rounded-xl border-none cursor-pointer flex items-center gap-0.5 shrink-0" type="button">
+                          <mat-icon class="text-xs">add</mat-icon> Add Section
+                        </button>
+                      </div>
+
+                      <!-- Syllabus modules loop -->
+                      <div class="space-y-4 max-h-[450px] overflow-y-auto pr-1">
+                        @for (mod of editingCourse()?.syllabus; track mod.title; let parentIdx = $index) {
+                          <div class="border border-slate-100 dark:border-slate-800/60 rounded-2xl p-4 space-y-3 bg-slate-50/50 dark:bg-slate-950/20 text-left">
+                            <div class="flex justify-between items-center">
+                              <h4 class="font-bold text-xs text-slate-800 dark:text-slate-200 font-mono flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                                {{ mod.title }}
+                              </h4>
+                              <button (click)="deleteCourseModule(parentIdx)" class="text-slate-400 hover:text-rose-500 cursor-pointer border-none bg-transparent" type="button" title="Delete Section Module">
+                                <mat-icon class="text-sm">delete</mat-icon>
+                              </button>
+                            </div>
+
+                            <!-- Add lesson box inside section -->
+                            <div class="flex gap-2 pt-1">
+                              <input #newLesInput type="text" placeholder="New lesson name..." class="flex-1 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 text-[10px] px-2 py-1 rounded-lg text-slate-800 dark:text-slate-100" />
+                              <button (click)="addCourseLesson(parentIdx, newLesInput.value); newLesInput.value = ''" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 dark:bg-indigo-950/40 dark:text-indigo-400 text-[9px] font-bold rounded-lg border-none cursor-pointer shrink-0" type="button">
+                                Add Lesson
+                              </button>
+                            </div>
+
+                            <!-- Lessons loop -->
+                            <div class="space-y-1.5 pl-2.5">
+                              @for (les of mod.lessons; track les; let childIdx = $index) {
+                                <div class="p-2.5 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/60 rounded-xl flex justify-between items-center text-[11px] group/item">
+                                  <span class="text-slate-700 dark:text-slate-300 font-medium truncate max-w-[160px]">{{ les }}</span>
+                                  <div class="flex items-center gap-1">
+                                    <!-- Move up -->
+                                    <button [disabled]="$first" (click)="moveCourseLesson(parentIdx, childIdx, 'up')" class="text-slate-300 hover:text-indigo-500 disabled:opacity-30 cursor-pointer border-none bg-transparent flex items-center" type="button">
+                                      <mat-icon class="text-xs">arrow_upward</mat-icon>
+                                    </button>
+                                    <!-- Move down -->
+                                    <button [disabled]="$last" (click)="moveCourseLesson(parentIdx, childIdx, 'down')" class="text-slate-300 hover:text-indigo-500 disabled:opacity-30 cursor-pointer border-none bg-transparent flex items-center" type="button">
+                                      <mat-icon class="text-xs">arrow_downward</mat-icon>
+                                    </button>
+                                    <!-- Upload lectures content trigger -->
+                                    <button (click)="state.showToast('Select Lecture files for ' + les + ': PDF slide packs or MP4 clips', 'success')" class="text-slate-300 hover:text-cyan-500 cursor-pointer border-none bg-transparent flex items-center" type="button" title="Select files for lecture content (Video, PDF, Resource)">
+                                      <mat-icon class="text-xs">cloud_upload</mat-icon>
+                                    </button>
+                                    <!-- Delete lesson -->
+                                    <button (click)="deleteCourseLesson(parentIdx, childIdx)" class="text-slate-300 hover:text-rose-500 cursor-pointer border-none bg-transparent flex items-center" type="button">
+                                      <mat-icon class="text-xs">close</mat-icon>
+                                    </button>
+                                  </div>
+                                </div>
+                              } @empty {
+                                <p class="text-[10px] text-slate-400 text-center py-2 font-mono">No lessons inside section. Add one above.</p>
+                              }
+                            </div>
+                          </div>
+                        } @empty {
+                          <div class="py-8 text-center space-y-2">
+                            <mat-icon class="text-slate-300">import_contacts</mat-icon>
+                            <p class="text-xs text-slate-400">Curriculum structure is empty. Add a module section to start compiling.</p>
+                          </div>
+                        }
+                      </div>
+                    </div>
+
+                    <!-- Quick Assessment Link card -->
+                    <div class="bg-indigo-900 border border-indigo-950 p-6 rounded-3xl shadow-sm text-white space-y-3 relative overflow-hidden">
+                      <div class="absolute -right-6 -bottom-6 text-white/5 pointer-events-none transform rotate-12">
+                        <mat-icon class="text-8xl">assessment</mat-icon>
+                      </div>
+                      <span class="text-[9px] uppercase font-bold text-cyan-300 font-mono tracking-wider">Evaluation Modules</span>
+                      <h4 class="font-extrabold text-sm text-white">Create Evaluation Assessments</h4>
+                      <p class="text-[11px] text-indigo-200 leading-relaxed font-light">Want to attach passing benchmarks or interactive quizzes to this track? Switch to our Evaluation deck.</p>
+                      <button (click)="activeInstructorView.set('quiz-management')" class="px-4 py-2 bg-cyan-400 hover:bg-cyan-500 text-indigo-950 text-xs font-bold rounded-xl border-none cursor-pointer font-mono" type="button">
+                        Go to Quiz Manager
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            } @else {
+              <div class="space-y-6">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <h2 class="text-lg font-black text-slate-800 dark:text-slate-200">Catalogued Curricula</h2>
+                    <p class="text-xs text-slate-500 mt-1">Review, delete, and manage course detail parameters live.</p>
+                  </div>
+                  <button (click)="activeInstructorView.set('create-course')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-md flex items-center gap-1 shrink-0 border-none cursor-pointer" type="button">
+                    <mat-icon class="text-sm">add_circle</mat-icon> Create New Course
+                  </button>
+                </div>
+
+                <!-- Course Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  @for (c of state.catalogCourses(); track c.id) {
+                    <div class="rounded-3xl border border-slate-200/50 dark:border-slate-800/50 bg-white dark:bg-slate-900 overflow-hidden hover:shadow-md transition-all flex flex-col justify-between group text-left">
+                      <div class="relative overflow-hidden aspect-video bg-slate-900">
+                        <img [src]="c.thumbnail" referrerpolicy="no-referrer" alt="Course Cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                        <span class="absolute left-3 top-3 bg-indigo-600/95 text-white text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm uppercase tracking-wider font-mono">{{ c.category }}</span>
+                        
+                        <button (click)="deleteCourse(c.id)" 
+                                class="absolute right-3 top-3 w-8 h-8 rounded-full bg-white/90 hover:bg-rose-50 text-rose-600 flex items-center justify-center shadow transition-all cursor-pointer border-none"
+                                type="button" title="Delete Course">
+                          <mat-icon class="text-sm">delete</mat-icon>
+                        </button>
+                      </div>
+
+                      <div class="p-5 space-y-4 flex-1 flex flex-col justify-between text-left">
+                        <div class="space-y-2">
+                          <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-100 line-clamp-1">{{ c.title }}</h3>
+                          <p class="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">{{ c.description }}</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400 py-3 border-y border-slate-100 dark:border-slate-800 font-mono">
+                          <span class="flex items-center gap-0.5"><mat-icon class="text-xs text-slate-300">schedule</mat-icon> {{ c.duration }}</span>
+                          <span class="flex items-center gap-0.5"><mat-icon class="text-xs text-slate-300">bar_chart</mat-icon> {{ c.level }}</span>
+                          <span class="flex items-center gap-0.5"><mat-icon class="text-xs text-slate-300">language</mat-icon> {{ c.language }}</span>
+                          <span class="flex items-center gap-0.5"><mat-icon class="text-xs text-slate-300">star</mat-icon> {{ c.rating }} rating</span>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-2">
+                          <span class="font-mono text-indigo-600 dark:text-cyan-400 font-bold text-sm">${{ c.price }}</span>
+                          <div class="flex gap-2">
+                            <button (click)="state.viewCourseDetails(c.id); switchWorkspace('learner')" class="px-3 py-1.5 border border-slate-200 text-[10px] font-bold rounded-lg hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 cursor-pointer bg-transparent" type="button">
+                              Preview Portal
+                            </button>
+                            <button (click)="startEditCourse(c.id)" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold rounded-lg cursor-pointer border-none flex items-center justify-center gap-0.5" type="button">
+                              <mat-icon class="text-xs">edit</mat-icon> Manage Syllabus
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  } @empty {
+                    <div class="col-span-full py-16 text-center space-y-4">
+                      <div class="w-16 h-16 rounded-full bg-slate-50 dark:bg-slate-850 flex items-center justify-center mx-auto text-slate-300">
+                        <mat-icon class="text-3xl">library_books</mat-icon>
+                      </div>
+                      <div class="space-y-1">
+                        <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">No courses in portfolio</h3>
+                        <p class="text-xs text-slate-500 max-w-xs mx-auto">Create beautiful learning paths using our dedicated wizard form to launch your syllabus globally.</p>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+
+          <!-- ==================== VIEW 3: CREATE COURSE ==================== -->
+          @if (activeInstructorView() === 'create-course') {
+            <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-6 text-left">
+              <div>
+                <h2 class="text-lg font-black text-slate-800 dark:text-slate-200">Course Creation Wizard</h2>
+                <p class="text-xs text-slate-500 mt-1">Publish structured reactive course content straight to the global academy catalog.</p>
+              </div>
+
+              <form [formGroup]="newCourseForm" (ngSubmit)="submitNewCourse()" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  
+                  <div class="space-y-1">
+                    <label for="new-course-title" class="text-[10px] uppercase font-bold text-slate-500 block">Course Title</label>
+                    <input id="new-course-title" type="text" formControlName="title" placeholder="e.g. RxJS Operators & High Performance Streams"
+                           class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-880/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500" />
+                  </div>
+
+                  <div class="space-y-1">
+                    <label for="new-course-category" class="text-[10px] uppercase font-bold text-slate-500 block">Category Track</label>
+                    <select id="new-course-category" formControlName="category" class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-880/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500">
+                      <option value="Development">Development (Angular, Rust, TS)</option>
+                      <option value="Design & Business">Design & Business (PLG, Figma)</option>
+                      <option value="Artificial Intelligence">Artificial Intelligence (LLMs)</option>
+                      <option value="Cloud Engineering">Cloud Engineering (Drizzle, SQL)</option>
+                      <option value="UI/UX Design">UI/UX Design (Animations, SVG)</option>
+                    </select>
+                  </div>
+
+                  <div class="space-y-1">
+                    <label for="new-course-price" class="text-[10px] uppercase font-bold text-slate-500 block">Pricing USD ($)</label>
+                    <input id="new-course-price" type="number" formControlName="price" placeholder="99"
+                           class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-880/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500" />
+                  </div>
+
+                  <div class="space-y-1">
+                    <label for="new-course-level" class="text-[10px] uppercase font-bold text-slate-500 block">Difficulty Level</label>
+                    <select id="new-course-level" formControlName="level" class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-880/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500">
+                      <option value="Beginner">Beginner</option>
+                      <option value="Intermediate">Intermediate</option>
+                      <option value="Advanced">Advanced</option>
+                    </select>
+                  </div>
+
+                  <div class="space-y-1">
+                    <label for="new-course-language" class="text-[10px] uppercase font-bold text-slate-500 block">Instruction Language</label>
+                    <select id="new-course-language" formControlName="language" class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-880/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500">
+                      <option value="English">English</option>
+                      <option value="Spanish">Spanish</option>
+                      <option value="German">German</option>
+                      <option value="French">French</option>
+                    </select>
+                  </div>
+
+                  <div class="space-y-1">
+                    <label for="new-course-duration" class="text-[10px] uppercase font-bold text-slate-500 block">Total Course Duration</label>
+                    <input id="new-course-duration" type="text" formControlName="duration" placeholder="e.g. 18 Hours"
+                           class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-880/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500" />
+                  </div>
+
+                  <div class="col-span-full space-y-1">
+                    <label for="new-course-desc" class="text-[10px] uppercase font-bold text-slate-500 block">Course Syllabus Abstract Description</label>
+                    <textarea id="new-course-desc" formControlName="description" placeholder="Provide deep structural descriptions regarding standard academic outcomes and lectures..." rows="3"
+                              class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-880/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500"></textarea>
+                  </div>
+
+                  <div class="space-y-1">
+                    <label for="new-course-outcomes" class="text-[10px] uppercase font-bold text-slate-500 block">Target Outcomes (Separate with Semicolons ';')</label>
+                    <input id="new-course-outcomes" type="text" formControlName="outcomes" placeholder="Outcome A; Outcome B; Outcome C"
+                           class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-880/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500" />
+                  </div>
+
+                  <div class="space-y-1">
+                    <label for="new-course-requirements" class="text-[10px] uppercase font-bold text-slate-500 block">Prerequisites (Separate with Semicolons ';')</label>
+                    <input id="new-course-requirements" type="text" formControlName="requirements" placeholder="Prerequisite A; Prerequisite B"
+                           class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-880/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500" />
+                  </div>
+
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+                  <button type="button" (click)="activeInstructorView.set('my-courses')" class="px-5 py-2.5 border border-slate-200 text-xs font-bold rounded-xl hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 cursor-pointer bg-transparent">
+                    Cancel
+                  </button>
+                  <button type="submit" [disabled]="!newCourseForm.valid" class="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-md cursor-pointer flex items-center gap-1 border-none">
+                    <mat-icon class="text-xs">publish</mat-icon> Publish Course to Catalog
+                  </button>
+                </div>
+              </form>
+            </div>
+          }
+
+          <!-- ==================== VIEW 4: ANALYTICS (REPORTS) ==================== -->
+          @if (activeInstructorView() === 'analytics') {
+            <div class="space-y-6">
+              <div>
+                <h2 class="text-lg font-black text-slate-800 dark:text-slate-200">Academy Performance Analytics</h2>
+                <p class="text-xs text-slate-500 mt-1">Deep visual telemetry measuring student completion ratios, quiz stats, and overall module grades.</p>
+              </div>
+
+              <!-- Reports Sub-tab Header switcher -->
+              <div class="flex gap-2 border-b border-slate-200/60 dark:border-slate-800/60 pb-3">
+                <button (click)="activeReportsView.set('progress')" 
+                        [class]="'px-4 py-2 text-xs font-bold rounded-lg cursor-pointer border-none ' + (activeReportsView() === 'progress' ? 'bg-indigo-600 text-white shadow' : 'text-slate-500 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800')">
+                  Learning Progress
+                </button>
+                <button (click)="activeReportsView.set('completion')" 
+                        [class]="'px-4 py-2 text-xs font-bold rounded-lg cursor-pointer border-none ' + (activeReportsView() === 'completion' ? 'bg-indigo-600 text-white shadow' : 'text-slate-500 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800')">
+                  Completion Reports
+                </button>
+                <button (click)="activeReportsView.set('quizzes')" 
+                        [class]="'px-4 py-2 text-xs font-bold rounded-lg cursor-pointer border-none ' + (activeReportsView() === 'quizzes' ? 'bg-indigo-600 text-white shadow' : 'text-slate-500 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800')">
+                  Quiz & Assignments
+                </button>
+              </div>
+
+              <!-- Reports Switch Views -->
+              @if (activeReportsView() === 'progress') {
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <!-- Progress SVG -->
+                  <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+                    <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200 text-left">Progress Scatter Curve</h3>
+                    <div class="h-44 w-full flex items-center justify-center">
+                      <svg class="w-full h-full text-indigo-500" viewBox="0 0 400 150">
+                        <line x1="20" y1="130" x2="380" y2="130" stroke="rgba(148,163,184,0.2)" stroke-width="2" />
+                        <line x1="20" y1="20" x2="20" y2="130" stroke="rgba(148,163,184,0.2)" stroke-width="2" />
+                        <!-- Trend Area -->
+                        <path d="M 20 120 Q 150 90, 250 40 T 380 15 L 380 130 L 20 130 Z" fill="currentColor" opacity="0.1" />
+                        <path d="M 20 120 Q 150 90, 250 40 T 380 15" stroke="currentColor" stroke-width="3" fill="none" />
+                        <!-- Points -->
+                        <circle cx="20" cy="120" r="4" fill="currentColor" />
+                        <circle cx="100" cy="100" r="4" fill="currentColor" />
+                        <circle cx="200" cy="80" r="4" fill="currentColor" />
+                        <circle cx="300" cy="30" r="4" fill="currentColor" />
+                        <circle cx="380" cy="15" r="5" fill="#10B981" />
+                      </svg>
+                    </div>
+                    <p class="text-[10px] text-slate-400 text-center font-mono">Average student progress: 74% of syllabus finished.</p>
+                  </div>
+
+                  <!-- Statistics cards -->
+                  <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4 flex flex-col justify-between text-left">
+                    <div>
+                      <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Study Track Engagement</h3>
+                      <p class="text-[11px] text-slate-400">Total hours calculated inside active sandboxes per track</p>
+                    </div>
+                    <div class="space-y-3">
+                      <div>
+                        <div class="flex justify-between text-[10px] font-bold mb-1">
+                          <span>Enterprise Angular & Architecture</span>
+                          <span>240 hours</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                          <div class="bg-indigo-600 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="flex justify-between text-[10px] font-bold mb-1">
+                          <span>Product-Led Growth & SaaS UX</span>
+                          <span>160 hours</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                          <div class="bg-cyan-500 h-2 rounded-full" style="width: 60%"></div>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="flex justify-between text-[10px] font-bold mb-1">
+                          <span>High-Fidelity SVG Dashboards</span>
+                          <span>92 hours</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                          <div class="bg-purple-600 h-2 rounded-full" style="width: 45%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              @if (activeReportsView() === 'completion') {
+                <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-6 text-left">
+                  <div class="flex justify-between items-center">
+                    <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Curricula Graduation Records</h3>
+                    <span class="text-xs bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 font-bold px-2 py-1 rounded font-mono">Overall Graduation: 89.2%</span>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-850 space-y-2 text-center">
+                      <p class="text-2xl font-black text-slate-800 dark:text-slate-100 font-mono">142</p>
+                      <p class="text-[10px] font-bold uppercase tracking-wide text-slate-400">Total Enrolled Graduates</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-850 space-y-2 text-center">
+                      <p class="text-2xl font-black text-indigo-600 dark:text-indigo-400 font-mono">12</p>
+                      <p class="text-[10px] font-bold uppercase tracking-wide text-slate-400">Certificates Pending</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-850 space-y-2 text-center">
+                      <p class="text-2xl font-black text-cyan-600 font-mono">94.5%</p>
+                      <p class="text-[10px] font-bold uppercase tracking-wide text-slate-400">Syllabus Completion Ratio</p>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              @if (activeReportsView() === 'quizzes') {
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 text-left">
+                  <!-- Quiz Statistics -->
+                  <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+                    <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Quiz Passing Records</h3>
+                    <div class="h-44 w-full flex items-center justify-center">
+                      <svg class="w-full h-full text-indigo-500" viewBox="0 0 300 150">
+                        <!-- Bar chart -->
+                        <rect x="30" y="30" width="30" height="100" fill="#6366F1" rx="4" />
+                        <text x="45" y="145" text-anchor="middle" class="text-[10px] fill-slate-400 font-bold">Quiz 1</text>
+                        <text x="45" y="25" text-anchor="middle" class="text-[10px] fill-slate-700 dark:fill-slate-300 font-bold">84%</text>
+
+                        <rect x="110" y="50" width="30" height="80" fill="#06B6D4" rx="4" />
+                        <text x="125" y="145" text-anchor="middle" class="text-[10px] fill-slate-400 font-bold">Quiz 2</text>
+                        <text x="125" y="45" text-anchor="middle" class="text-[10px] fill-slate-700 dark:fill-slate-300 font-bold">72%</text>
+
+                        <rect x="190" y="20" width="30" height="110" fill="#8B5CF6" rx="4" />
+                        <text x="205" y="145" text-anchor="middle" class="text-[10px] fill-slate-400 font-bold">Quiz 3</text>
+                        <text x="205" y="15" text-anchor="middle" class="text-[10px] fill-slate-700 dark:fill-slate-300 font-bold">91%</text>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <!-- Assignment Submissions Overviews -->
+                  <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+                    <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Grading Deck Snapshot</h3>
+                    <div class="space-y-2">
+                      <div class="p-3 bg-slate-50 dark:bg-slate-850 rounded-xl flex justify-between items-center">
+                        <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Clean Architecture Decoupling</span>
+                        <span class="text-[10px] bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 font-mono px-2 py-0.5 rounded font-bold">2 PENDING</span>
+                      </div>
+                      <div class="p-3 bg-slate-50 dark:bg-slate-850 rounded-xl flex justify-between items-center">
+                        <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Figma Design System Components</span>
+                        <span class="text-[10px] bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 font-mono px-2 py-0.5 rounded font-bold">1 PENDING</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+          <!-- ==================== VIEW 5: STUDENT LIST ==================== -->
+          @if (activeInstructorView() === 'student-list') {
+            <div class="space-y-6 text-left">
+              <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                  <h2 class="text-lg font-black text-slate-800 dark:text-slate-200">Academy Registrar Directory</h2>
+                  <p class="text-xs text-slate-500 mt-1">Review student academic performance, grade levels, and active catalog statuses.</p>
+                </div>
+                
+                <div class="flex gap-2 w-full md:w-auto">
+                  <div class="relative flex-1 md:w-64">
+                    <span class="absolute left-3 top-3 text-slate-400"><mat-icon class="text-sm">search</mat-icon></span>
+                    <input type="text" [value]="instructorStudentSearch()" (input)="instructorStudentSearch.set($any($event.target).value)"
+                           placeholder="Search registrar index..."
+                           class="w-full pl-9 pr-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Student directory Table -->
+              <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl shadow-sm overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                  <thead class="bg-slate-50 dark:bg-slate-850 text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono">
+                    <tr>
+                      <th class="p-4 rounded-l-xl">Student Name</th>
+                      <th class="p-4">Contact Email</th>
+                      <th class="p-4">Enrollment Date</th>
+                      <th class="p-4">Track Progress</th>
+                      <th class="p-4">Average Grade</th>
+                      <th class="p-4">Status</th>
+                      <th class="p-4 rounded-r-xl text-right">Administrative Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                    @for (s of students(); track s.id) {
+                      @if (!instructorStudentSearch() || s.name.toLowerCase().includes(instructorStudentSearch().toLowerCase())) {
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-850/30 transition-colors">
+                          <td class="p-4 font-bold text-slate-800 dark:text-slate-200">{{ s.name }}</td>
+                          <td class="p-4 font-mono text-slate-400">{{ s.email }}</td>
+                          <td class="p-4">{{ s.enrollmentDate }}</td>
+                          <td class="p-4">
+                            <div class="flex items-center gap-2">
+                              <div class="w-20 bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-brand-500 h-1.5 rounded-full" [style.width.%]="s.progressPercent"></div>
+                              </div>
+                              <span class="font-mono text-[10px] font-bold">{{ s.progressPercent }}%</span>
+                            </div>
+                          </td>
+                          <td class="p-4 font-mono font-bold text-indigo-600 dark:text-cyan-400">{{ s.avgGrade }}%</td>
+                          <td class="p-4">
+                            <span [class]="'text-[9px] font-bold px-2 py-0.5 rounded-full inline-block ' + 
+                                           (s.status === 'Active' ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40' : 'bg-rose-50 text-rose-500')">
+                              {{ s.status }}
+                            </span>
+                          </td>
+                          <td class="p-4 text-right">
+                            <button (click)="toggleUserStatus(s.id)" class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer border-none bg-transparent" type="button">
+                              Toggle Status
+                            </button>
+                          </td>
+                        </tr>
+                      }
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+
+          <!-- ==================== VIEW 6: REVENUE & DISBURSEMENTS ==================== -->
+          @if (activeInstructorView() === 'revenue') {
+            <div class="space-y-6 text-left">
+              <div class="p-6 rounded-3xl bg-gradient-to-r from-indigo-900 to-indigo-950 text-white shadow-lg border border-indigo-950 space-y-4">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <span class="text-[10px] uppercase font-bold text-cyan-300 font-mono tracking-wider">Withdrawable Funds Balance</span>
+                    <h2 class="text-3xl font-black text-white tracking-tight mt-1 font-mono">$18,250.00</h2>
+                  </div>
+                  <mat-icon class="text-4xl text-cyan-400/80">account_balance_wallet</mat-icon>
+                </div>
+                <p class="text-xs text-indigo-200 leading-relaxed max-w-xl font-light">
+                  Your funds are accumulated and cleared automatically on modular billing cycles. Instant payout channels are available.
+                </p>
+                <button (click)="triggerPayout('inst1', 18250)" class="bg-cyan-400 hover:bg-cyan-500 text-indigo-950 text-xs font-bold px-4 py-2.5 rounded-xl shadow transition-all cursor-pointer border-none flex items-center gap-1.5 font-mono" type="button">
+                  <mat-icon class="text-xs">cloud_upload</mat-icon> Request Immediate Digital Payout
+                </button>
+              </div>
+
+              <!-- Earnings Ledger -->
+              <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl shadow-sm space-y-4">
+                <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Historical Disbursement Log</h3>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-50 dark:bg-slate-850 text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono">
+                      <tr>
+                        <th class="p-4 rounded-l-xl">Disbursement Ref ID</th>
+                        <th class="p-4">Disbursed Target</th>
+                        <th class="p-4">Clearing Gateway</th>
+                        <th class="p-4">Amount USD</th>
+                        <th class="p-4 rounded-r-xl">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                      <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-850/30">
+                        <td class="p-4 font-mono font-bold text-indigo-600 dark:text-cyan-400">DISB-44028</td>
+                        <td class="p-4 font-bold text-slate-800 dark:text-slate-200">evelyn@omni.com</td>
+                        <td class="p-4">Bank Swift ACH</td>
+                        <td class="p-4 font-bold font-mono">$15,400</td>
+                        <td class="p-4"><span class="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full inline-block">Cleared</span></td>
+                      </tr>
+                      <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-850/30">
+                        <td class="p-4 font-mono font-bold text-indigo-600 dark:text-cyan-400">DISB-38291</td>
+                        <td class="p-4 font-bold text-slate-800 dark:text-slate-200">evelyn@omni.com</td>
+                        <td class="p-4">Bank Swift ACH</td>
+                        <td class="p-4 font-bold font-mono">$14,850</td>
+                        <td class="p-4"><span class="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full inline-block">Cleared</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- ==================== VIEW 7: QUIZ MANAGEMENT ==================== -->
+          @if (activeInstructorView() === 'quiz-management') {
+            <div class="space-y-6 text-left">
+              <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                <div>
+                  <h2 class="text-lg font-black text-slate-800 dark:text-slate-200">Quiz & Evaluation Manager</h2>
+                  <p class="text-xs text-slate-500 mt-1">Audit evaluation questions, customize passing criteria parameters, and track student success metrics.</p>
+                </div>
+                @if (!showQuizCreator()) {
+                  <button (click)="showQuizCreator.set(true)" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow cursor-pointer border-none flex items-center gap-1 shrink-0 self-start sm:self-center" type="button">
+                    <mat-icon class="text-sm">add_circle</mat-icon> Create Evaluation Quiz
+                  </button>
+                } @else {
+                  <button (click)="showQuizCreator.set(false)" class="border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-850 text-xs font-bold px-4 py-2.5 rounded-xl cursor-pointer bg-transparent shrink-0 self-start sm:self-center" type="button">
+                    Back to Quizzes
+                  </button>
+                }
+              </div>
+
+              @if (showQuizCreator()) {
+                <!-- Quiz Creator UI Box -->
+                <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4 max-w-xl">
+                  <div>
+                    <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Construct Dynamic Evaluation Quiz</h3>
+                    <p class="text-[11px] text-slate-400">Configure passing thresholds and evaluation questions count.</p>
+                  </div>
+                  
+                  <div class="space-y-3">
+                    <div class="space-y-1">
+                      <span class="text-[10px] uppercase font-bold text-slate-400 block">Quiz Title</span>
+                      <input type="text" [value]="newQuizTitle()" (input)="newQuizTitle.set($any($event.target).value)" placeholder="e.g. Signals Core Concepts Quiz"
+                             class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200/50 rounded-xl text-xs text-slate-800 dark:text-slate-100" />
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                      <div class="space-y-1">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 block">Passing Benchmark (%)</span>
+                        <input type="number" [value]="newQuizPassingScore()" (input)="newQuizPassingScore.set($any($event.target).value)"
+                               class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200/50 rounded-xl text-xs font-mono text-slate-800 dark:text-slate-100" />
+                      </div>
+                      
+                      <div class="space-y-1">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 block">Total Questions</span>
+                        <input type="number" [value]="newQuizQuestionsCount()" (input)="newQuizQuestionsCount.set($any($event.target).value)"
+                               class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200/50 rounded-xl text-xs font-mono text-slate-800 dark:text-slate-100" />
+                      </div>
+                    </div>
+
+                    <button (click)="createQuizSubmit(newQuizTitle(), newQuizPassingScore(), newQuizQuestionsCount()); showQuizCreator.set(false)" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow cursor-pointer flex items-center justify-center gap-1 border-none" type="button">
+                      <mat-icon class="text-sm">publish</mat-icon> Publish Quiz Benchmark
+                    </button>
+                  </div>
+                </div>
+              } @else {
+                <!-- Quiz grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  @for (q of instructorQuizzes(); track q.id) {
+                    <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 hover:shadow-md transition-all space-y-4">
+                      <div class="flex justify-between items-start">
+                        <span [class]="'text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ' + 
+                                       (q.status === 'Published' ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40' : 'bg-slate-100 text-slate-500')">
+                          {{ q.status }}
+                        </span>
+                        <span class="text-[10px] font-bold text-slate-400 font-mono">{{ q.questionsCount }} questions</span>
+                      </div>
+
+                      <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-100 leading-snug">{{ q.title }}</h3>
+                      
+                      <div class="grid grid-cols-2 gap-3 text-[10px] font-mono border-t border-slate-100 dark:border-slate-800 pt-3">
+                        <div>
+                          <span class="block text-slate-400 font-bold">Passing Score</span>
+                          <span class="font-bold text-slate-700 dark:text-slate-300">{{ q.passingScore }}% score</span>
+                        </div>
+                        <div>
+                          <span class="block text-slate-400 font-bold">Average Class Score</span>
+                          <span class="font-bold text-indigo-600 dark:text-cyan-400">{{ q.avgScore > 0 ? q.avgScore + '%' : 'N/A' }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+
+          <!-- ==================== VIEW 8: ASSIGNMENT DECK (GRADING) ==================== -->
+          @if (activeInstructorView() === 'assignment-management') {
+            <div class="space-y-6 text-left">
+              <div>
+                <h2 class="text-lg font-black text-slate-800 dark:text-slate-200">Assignment Grading Deck</h2>
+                <p class="text-xs text-slate-500 mt-1">Review student project pdfs/zips, record scores, and submit direct code feedback logs.</p>
+              </div>
+
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Submission List table -->
+                <div class="lg:col-span-2 p-6 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl shadow-sm overflow-x-auto space-y-4">
+                  <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Submissions Ledger</h3>
+                  
+                  <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-50 dark:bg-slate-850 text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono">
+                      <tr>
+                        <th class="p-3 rounded-l-xl">Student Name</th>
+                        <th class="p-3">Course Project</th>
+                        <th class="p-3">File Asset</th>
+                        <th class="p-3 text-center">Score</th>
+                        <th class="p-3 text-center">Status</th>
+                        <th class="p-3 rounded-r-xl text-right">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                      @for (sub of assignmentSubmissions(); track sub.id) {
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-850/30 transition-colors">
+                          <td class="p-3 font-bold text-slate-800 dark:text-slate-200">{{ sub.studentName }}</td>
+                          <td class="p-3 truncate max-w-[150px]">{{ sub.assignmentTitle }}</td>
+                          <td class="p-3 font-mono text-[10px] text-slate-400"><span class="underline">{{ sub.file }}</span></td>
+                          <td class="p-3 text-center font-mono font-bold text-indigo-600 dark:text-cyan-400">{{ sub.grade ? sub.grade + '%' : '—' }}</td>
+                          <td class="p-3 text-center">
+                            <span [class]="'text-[9px] font-bold px-2 py-0.5 rounded-full inline-block ' + 
+                                           (sub.status === 'Graded' ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40' : 'bg-amber-50 text-amber-500 dark:bg-amber-950/40')">
+                              {{ sub.status }}
+                            </span>
+                          </td>
+                          <td class="p-3 text-right">
+                            <button (click)="startGradeSubmission(sub)" class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer border-none bg-transparent" type="button">
+                              {{ sub.status === 'Graded' ? 'Edit Grade' : 'Grade Homework' }}
+                            </button>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Grading Evaluation Box -->
+                <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+                  <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Evaluation Deck</h3>
+                  
+                  @if (selectedSubId()) {
+                    <div class="space-y-4">
+                      <div class="space-y-1">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 block">Set Score (0 - 100)</span>
+                        <input type="number" [value]="assignmentGradeInput()" (input)="assignmentGradeInput.set($any($event.target).value)"
+                               class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200/50 rounded-xl text-xs font-mono" />
+                      </div>
+                      <div class="space-y-1">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 block">Instructors Academic Feedback Comment</span>
+                        <textarea [value]="assignmentCommentInput()" (input)="assignmentCommentInput.set($any($event.target).value)" rows="4"
+                                  class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200/50 rounded-xl text-xs"></textarea>
+                      </div>
+                      <div class="flex gap-2">
+                        <button (click)="selectedSubId.set(null)" class="flex-1 py-2 border border-slate-200 text-xs font-bold rounded-xl hover:bg-slate-50 text-slate-600 dark:text-slate-300 cursor-pointer bg-transparent" type="button">Cancel</button>
+                        <button (click)="saveGradeSubmission()" class="flex-1 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow cursor-pointer border-none" type="button">Commit Score</button>
+                      </div>
+                    </div>
+                  } @else {
+                    <div class="py-12 text-center space-y-3">
+                      <div class="w-12 h-12 rounded-full bg-slate-50 dark:bg-slate-850 flex items-center justify-center mx-auto text-slate-300">
+                        <mat-icon>spellcheck</mat-icon>
+                      </div>
+                      <p class="text-xs text-slate-400 max-w-xs mx-auto">Select a student submission from the ledger to activate the evaluation grading deck.</p>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- ==================== VIEW 9: REVIEWS ==================== -->
+          @if (activeInstructorView() === 'reviews') {
+            <div class="space-y-6 text-left">
+              <div>
+                <h2 class="text-lg font-black text-slate-800 dark:text-slate-200">Master Course Reviews Feed</h2>
+                <p class="text-xs text-slate-500 mt-1">Review student testimonial reports, stars, and course reviews.</p>
+              </div>
+
+              <!-- Reviews list loop -->
+              <div class="space-y-4">
+                <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl flex flex-col sm:flex-row gap-4 items-start">
+                  <div class="flex items-center gap-1 text-amber-500 text-sm font-extrabold shrink-0">
+                    <mat-icon>star</mat-icon>
+                    <mat-icon>star</mat-icon>
+                    <mat-icon>star</mat-icon>
+                    <mat-icon>star</mat-icon>
+                    <mat-icon>star</mat-icon>
+                    <span class="text-slate-800 dark:text-slate-200 ml-2 font-mono">5.0</span>
+                  </div>
+                  <div class="space-y-1">
+                    <p class="text-xs font-bold text-slate-700 dark:text-slate-300 text-left">Pradeep Kumar <span class="text-[10px] text-slate-400 font-mono font-normal ml-2">Enterprise Angular</span></p>
+                    <p class="text-[11px] text-slate-500 leading-relaxed text-left">"The Zoneless concepts and Signals state management examples are the absolute best. Truly premium modules!"</p>
+                  </div>
+                </div>
+
+                <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-2xl flex flex-col sm:flex-row gap-4 items-start">
+                  <div class="flex items-center gap-1 text-amber-500 text-sm font-extrabold shrink-0">
+                    <mat-icon>star</mat-icon>
+                    <mat-icon>star</mat-icon>
+                    <mat-icon>star</mat-icon>
+                    <mat-icon>star</mat-icon>
+                    <mat-icon class="text-slate-200">star</mat-icon>
+                    <span class="text-slate-800 dark:text-slate-200 ml-2 font-mono">4.0</span>
+                  </div>
+                  <div class="space-y-1">
+                    <p class="text-xs font-bold text-slate-700 dark:text-slate-300 text-left">Alice Smith <span class="text-[10px] text-slate-400 font-mono font-normal ml-2">Product-Led Growth</span></p>
+                    <p class="text-[11px] text-slate-500 leading-relaxed text-left">"Great real world examples regarding Figma design assets, but could include more detailed quizzes."</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- ==================== VIEW 10: ANNOUNCEMENTS ==================== -->
+          @if (activeInstructorView() === 'announcements') {
+            <div class="space-y-6 text-left">
+              <!-- Live broadcast composer (real API via NotificationService.broadcastAnnouncement) -->
+              <app-broadcast-composer />
+
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Dispatch Announcement Form -->
+                <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+                  <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Broadcast Announcement</h3>
+                  
+                  <div class="space-y-3">
+                    <div class="space-y-1">
+                      <span class="text-[10px] uppercase font-bold text-slate-400 block">Announcement Title</span>
+                      <input type="text" [value]="newAnnouncementTitle()" (input)="newAnnouncementTitle.set($any($event.target).value)" placeholder="e.g. Live Masterclass Q&A Tomorrow"
+                             class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200/50 rounded-xl text-xs" />
+                    </div>
+                    
+                    <div class="space-y-1">
+                      <span class="text-[10px] uppercase font-bold text-slate-400 block">Target Curricula</span>
+                      <select [value]="newAnnouncementCourse()" (change)="newAnnouncementCourse.set($any($event.target).value)"
+                              class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200/50 rounded-xl text-xs">
+                        <option value="All Courses">All Courses</option>
+                        <option value="Enterprise Angular & Clean Architecture">Enterprise Angular & Clean Architecture</option>
+                        <option value="Product-Led Growth & Modern SaaS UX">Product-Led Growth & Modern SaaS UX</option>
+                      </select>
+                    </div>
+
+                    <div class="space-y-1">
+                      <span class="text-[10px] uppercase font-bold text-slate-400 block">Broadcast Message Content</span>
+                      <textarea [value]="newAnnouncementText()" (input)="newAnnouncementText.set($any($event.target).value)" rows="4" placeholder="Enter broadcast body..."
+                                class="w-full p-2.5 bg-slate-50 dark:bg-slate-850 border border-slate-200/50 rounded-xl text-xs"></textarea>
+                    </div>
+
+                    <button (click)="publishAnnouncement()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow cursor-pointer flex items-center justify-center gap-1 border-none" type="button">
+                      <mat-icon class="text-sm">campaign</mat-icon> Dispatch Broadcast Alert
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Existing Broadcast list -->
+                <div class="lg:col-span-2 p-6 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl shadow-sm space-y-4">
+                  <h3 class="font-extrabold text-sm text-slate-800 dark:text-slate-200">Active Broadcasters Logs</h3>
+                  
+                  <div class="space-y-4">
+                    @for (ann of announcements(); track ann.id) {
+                      <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800 space-y-3 relative">
+                        <button (click)="deleteAnnouncement(ann.id)" 
+                                class="absolute right-3 top-3 text-slate-400 hover:text-rose-500 cursor-pointer border-none bg-transparent"
+                                type="button" title="Delete Announcement">
+                          <mat-icon class="text-sm">delete</mat-icon>
+                        </button>
+                        <div class="flex justify-between items-center pr-6">
+                          <span class="text-[9px] font-bold uppercase tracking-wider text-indigo-500 bg-indigo-50 dark:bg-indigo-950/40 px-2.5 py-1 rounded-full font-mono">{{ ann.course }}</span>
+                          <span class="text-[9px] font-mono text-slate-400">{{ ann.date }}</span>
+                        </div>
+                        <h4 class="font-bold text-xs text-slate-800 dark:text-slate-200">{{ ann.title }}</h4>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed leading-normal">{{ ann.text }}</p>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- ==================== INTERNSHIPS VIEW (real API) ==================== -->
+          @if (activeInstructorView() === 'internships') {
+            <div class="space-y-6 text-left">
+              <app-instructor-internships />
+            </div>
+          }

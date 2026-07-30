@@ -1,0 +1,240 @@
+<div class="space-y-8 animate-fade-in">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-50">Enterprise Scholar Bio</h1>
+      <p class="text-xs text-slate-500 mt-1">Review your credential metrics, experience background, and complete educational files</p>
+    </div>
+  </div>
+  
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <!-- Left Column: Completion stats & Overview -->
+    <div class="space-y-6">
+      
+      <!-- Scholar Overview Card -->
+      <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl shadow-sm text-center space-y-4">
+        <div class="relative w-28 h-28 mx-auto">
+          <img [src]="state.profile().profilePhoto" referrerpolicy="no-referrer" alt="Avatar" class="w-full h-full rounded-full object-cover ring-4 ring-brand-500/20 shadow-lg" />
+          <button (click)="triggerMockPhotoUpload()"
+                  class="absolute bottom-1 right-1 p-2 rounded-full bg-brand-500 hover:bg-brand-600 text-white shadow-md cursor-pointer border-none" type="button">
+            <mat-icon class="text-xs">photo_camera</mat-icon>
+          </button>
+        </div>
+
+        <!-- Interactive Avatar Selection UI Picker -->
+        <div class="space-y-2 pt-2">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block font-mono">Or select premium avatar template</span>
+          <div class="flex justify-center gap-1.5 flex-wrap">
+            @for (av of avatarsList; track av) {
+              <button type="button" (click)="selectAvatar(av)"
+                      class="w-8 h-8 rounded-full border-2 overflow-hidden hover:scale-110 transition-all cursor-pointer bg-transparent"
+                      [class.border-indigo-600]="state.profile().profilePhoto === av"
+                      [class.border-transparent]="state.profile().profilePhoto !== av">
+                <img [src]="av" alt="avatar option" class="w-full h-full object-cover" referrerpolicy="no-referrer" />
+              </button>
+            }
+          </div>
+        </div>
+
+        <div>
+          <h2 class="font-extrabold text-base text-slate-800 dark:text-slate-200 flex items-center justify-center gap-1">
+            {{ state.profile().fullName }}
+            <mat-icon class="text-sm text-brand-500">verified</mat-icon>
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">&#64;{{ state.profile().username }}</p>
+          <p class="text-xs text-slate-400 mt-2 italic px-4">"{{ state.profile().bio }}"</p>
+        </div>
+
+        <div class="p-4 bg-slate-50/50 dark:bg-slate-850/50 rounded-2xl text-left text-xs space-y-2.5 border border-slate-100 dark:border-slate-800">
+          <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-1.5">
+            <span class="font-medium text-slate-500">Email Address</span>
+            <span class="font-semibold text-slate-700 dark:text-slate-300 truncate max-w-[150px]">{{ state.profile().email }}</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-1.5">
+            <span class="font-medium text-slate-500">Mobile Phone</span>
+            <span class="font-semibold text-slate-700 dark:text-slate-300">{{ state.profile().mobile || 'Not set' }}</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-1.5">
+            <span class="font-medium text-slate-500">System Role</span>
+            <span class="font-bold text-indigo-600 dark:text-cyan-400">Enterprise Scholar VIP</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-1.5">
+            <span class="font-medium text-slate-500">Account Status</span>
+            <span class="font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 rounded text-[10px] font-mono">Active</span>
+          </div>
+          <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-1.5">
+            <span class="font-medium text-slate-500">Joined Date</span>
+            <span class="font-semibold text-slate-700 dark:text-slate-300 font-mono">July 01, 2026</span>
+          </div>
+          <div class="flex justify-between items-center pt-0.5">
+            <span class="font-medium text-slate-500">Verification</span>
+            <span class="font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded text-[10px] font-mono">{{ state.profile().verificationStatus }}</span>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button type="button" (click)="showLogoutConfirmation.set(true)"
+                  class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-rose-200/60 dark:border-rose-900/40 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/25 font-bold text-xs transition-colors cursor-pointer bg-transparent">
+            <mat-icon class="text-sm">logout</mat-icon> Sign Out of Session
+          </button>
+        </div>
+      </div>
+
+      <!-- Profile Completion Widget -->
+      <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl shadow-sm space-y-4">
+        <div class="flex justify-between items-baseline">
+          <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Credentials Completeness</h3>
+          <span class="text-sm font-bold text-brand-500 font-mono">{{ state.profileCompletion() }}%</span>
+        </div>
+        <div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+          <div class="h-full bg-brand-500 rounded-full animate-pulse" [style.width.%]="state.profileCompletion()"></div>
+        </div>
+        <p class="text-[10px] text-slate-500 leading-normal">
+          Complete address coordinates, verification fields, and social details to unlock the <strong>SaaS Elite Diploma Badge</strong>!
+        </p>
+      </div>
+
+      <!-- Verified Skills Deck -->
+      <div class="p-5 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl shadow-sm space-y-3.5">
+        <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Registered Skills</h3>
+        <div class="flex flex-wrap gap-2">
+          @for (skill of state.profile().skills; track skill) {
+            <span class="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 text-xs px-2.5 py-1 rounded-lg font-bold">✓ {{ skill }}</span>
+          }
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Interactive Profile Edit Form (Reactive Form) -->
+    <div class="lg:col-span-2 p-6 md:p-8 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl shadow-sm space-y-6">
+      <h3 class="font-extrabold text-lg text-slate-800 dark:text-slate-200">Personal Information Coordinates</h3>
+      
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfileSubmit()" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          
+          <div class="space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">Full Legal Name</span>
+            <input type="text" formControlName="fullName"
+                   class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+            @if (profileForm.get('fullName')?.touched && profileForm.get('fullName')?.invalid) {
+              <p class="text-[10px] text-rose-500 font-semibold animate-pulse">Full name is required for certificate issuance.</p>
+            }
+          </div>
+
+          <div class="space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">System Username</span>
+            <input type="text" formControlName="username"
+                   class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+            @if (profileForm.get('username')?.touched && profileForm.get('username')?.invalid) {
+              <p class="text-[10px] text-rose-500 font-semibold animate-pulse">System username is required.</p>
+            }
+          </div>
+
+          <div class="md:col-span-2 space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">Professional bio</span>
+            <textarea formControlName="bio" rows="2"
+                      class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none"></textarea>
+          </div>
+
+          <div class="space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">Email Address (Primary)</span>
+            <div class="relative">
+              <input type="email" formControlName="email"
+                     class="w-full p-2.5 pr-20 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+              @if (state.profile().emailVerified) {
+                <span class="absolute right-2.5 top-2 bg-emerald-500 text-white text-[9px] font-bold px-2 py-0.5 rounded font-mono">Verified</span>
+              } @else {
+                <button type="button" (click)="state.verifyEmail()" class="absolute right-2.5 top-2 bg-brand-500 text-white text-[9px] font-bold px-2 py-0.5 rounded border-none cursor-pointer">Verify</button>
+              }
+            </div>
+            @if (profileForm.get('email')?.touched && profileForm.get('email')?.invalid) {
+              <p class="text-[10px] text-rose-500 font-semibold animate-pulse">A valid academic/corporate email is required.</p>
+            }
+          </div>
+
+          <div class="space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">Mobile Connection</span>
+            <div class="relative">
+              <input type="text" formControlName="mobile"
+                     class="w-full p-2.5 pr-20 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+              @if (state.profile().mobileVerified) {
+                <span class="absolute right-2.5 top-2 bg-emerald-500 text-white text-[9px] font-bold px-2 py-0.5 rounded font-mono">Verified</span>
+              } @else {
+                <button type="button" (click)="state.verifyMobile()" class="absolute right-2.5 top-2 bg-brand-500 text-white text-[9px] font-bold px-2 py-0.5 rounded border-none cursor-pointer">Verify</button>
+              }
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">Country / Region</span>
+            <input type="text" formControlName="country"
+                   class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+          </div>
+
+          <div class="space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">State / Province</span>
+            <input type="text" formControlName="state"
+                   class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+          </div>
+
+          <div class="space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">City</span>
+            <input type="text" formControlName="city"
+                   class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+          </div>
+
+          <div class="space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">ZIP / Postal Code</span>
+            <input type="text" formControlName="zipCode"
+                   class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+          </div>
+
+          <div class="md:col-span-2 space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">Educational History</span>
+            <input type="text" formControlName="education"
+                   class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+          </div>
+
+          <div class="md:col-span-2 space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">Enterprise Experience Background</span>
+            <input type="text" formControlName="experience"
+                   class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+          </div>
+
+          <div class="md:col-span-2 space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">LinkedIn Profile Address</span>
+            <input type="text" formControlName="linkedin"
+                   class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+          </div>
+
+          <div class="space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">GitHub Profile Address</span>
+            <input type="text" formControlName="github"
+                   class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+          </div>
+
+          <div class="space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">Twitter / X Profile Address</span>
+            <input type="text" formControlName="twitter"
+                   class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+          </div>
+
+          <div class="md:col-span-2 space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block font-mono">Skills Matrix (Comma-separated)</span>
+            <input type="text" formControlName="skills"
+                   class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-slate-100 focus:outline-none" />
+            <p class="text-[10px] text-slate-400">Specify your technical skills separated by commas, e.g. "Angular Signals, TypeScript, RxJS"</p>
+          </div>
+
+        </div>
+
+        <button type="submit" [disabled]="!profileForm.valid"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-5 py-3 rounded-xl shadow-md transition-all cursor-pointer border-none">
+          Save Coordinates Profile
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>

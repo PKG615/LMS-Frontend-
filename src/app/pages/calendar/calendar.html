@@ -1,0 +1,284 @@
+<div class="space-y-8">
+  <!-- Header with Modes -->
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-50">Enterprise Scholar Calendar</h1>
+      <p class="text-xs text-slate-500 mt-1">Manage deadlines, sync interactive check-ins, and schedule live academic consultations</p>
+    </div>
+    <div class="flex gap-1.5 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl self-start sm:self-auto">
+      <button (click)="calendarMode.set('monthly')"
+              [class]="'px-3 py-1.5 rounded-lg text-xs font-bold transition-all ' + (calendarMode() === 'monthly' ? 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-150 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300')"
+              type="button">Monthly</button>
+      <button (click)="calendarMode.set('weekly')"
+              [class]="'px-3 py-1.5 rounded-lg text-xs font-bold transition-all ' + (calendarMode() === 'weekly' ? 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-150 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300')"
+              type="button">Weekly</button>
+      <button (click)="calendarMode.set('daily')"
+              [class]="'px-3 py-1.5 rounded-lg text-xs font-bold transition-all ' + (calendarMode() === 'daily' ? 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-150 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300')"
+              type="button">Daily</button>
+    </div>
+  </div>
+
+  <!-- Filter Chips row -->
+  <div class="flex flex-wrap items-center gap-2">
+    <span class="text-xs font-bold text-slate-400 mr-2">Filter Type:</span>
+    <button (click)="calendarFilterType.set('all')"
+            [class]="'px-3 py-1 rounded-full text-xs font-semibold border transition-all ' + (calendarFilterType() === 'all' ? 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 border-slate-900 dark:border-slate-100' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-850')"
+            type="button">All Events</button>
+    <button (click)="calendarFilterType.set('live')"
+            [class]="'px-3 py-1 rounded-full text-xs font-semibold border transition-all ' + (calendarFilterType() === 'live' ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white dark:bg-slate-900 text-emerald-600 border-emerald-200 dark:border-emerald-950/40 hover:bg-emerald-50 dark:hover:bg-emerald-950/20')"
+            type="button">
+      <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block mr-1"></span> Live Lectures
+    </button>
+    <button (click)="calendarFilterType.set('assignments')"
+            [class]="'px-3 py-1 rounded-full text-xs font-semibold border transition-all ' + (calendarFilterType() === 'assignments' ? 'bg-rose-500 text-white border-rose-500' : 'bg-white dark:bg-slate-900 text-rose-600 border-rose-200 dark:border-rose-950/40 hover:bg-rose-50 dark:hover:bg-rose-950/20')"
+            type="button">
+      <span class="w-2 h-2 rounded-full bg-rose-500 inline-block mr-1"></span> Assignments
+    </button>
+    <button (click)="calendarFilterType.set('quizzes')"
+            [class]="'px-3 py-1 rounded-full text-xs font-semibold border transition-all ' + (calendarFilterType() === 'quizzes' ? 'bg-purple-500 text-white border-purple-500' : 'bg-white dark:bg-slate-900 text-purple-600 border-purple-200 dark:border-purple-950/40 hover:bg-purple-50 dark:hover:bg-purple-950/20')"
+            type="button">
+      <span class="w-2 h-2 rounded-full bg-purple-500 inline-block mr-1"></span> Quizzes
+    </button>
+  </div>
+
+  <!-- Calendar Container Split Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <!-- LEFT AREA: Calendar views -->
+    <div class="lg:col-span-2">
+      
+      <!-- MONTHLY VIEW -->
+      @if (calendarMode() === 'monthly') {
+        <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl shadow-sm space-y-6 animate-fade-in">
+          <div class="flex justify-between items-center">
+            <h3 class="font-bold text-base text-slate-800 dark:text-slate-200">July 2026</h3>
+            <div class="flex gap-2">
+              <button class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-850 text-slate-500 transition-all" type="button"><mat-icon>chevron_left</mat-icon></button>
+              <button class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-850 text-slate-500 transition-all" type="button"><mat-icon>chevron_right</mat-icon></button>
+            </div>
+          </div>
+
+          <!-- Weekdays -->
+          <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-slate-400 py-2 border-b border-slate-100 dark:border-slate-800">
+            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+          </div>
+
+          <!-- Days Grid -->
+          <div class="grid grid-cols-7 gap-2 text-center text-xs">
+            <span class="p-4"></span><span class="p-4"></span>
+            
+            @for (day of calendarDays; track day.num) {
+              <!-- Check if day has specific filtered event -->
+              @let dayEvts = filteredCalendarEvents();
+              
+              <button (click)="selectedCalendarDay.set(day.num)"
+                      [class]="'p-3 rounded-2xl flex flex-col items-center justify-between min-h-[64px] transition-all relative border ' + 
+                               (selectedCalendarDay() === day.num ? 'border-brand-500 bg-brand-50/10 font-bold dark:bg-brand-950/10' : 'border-slate-100 dark:border-slate-850 hover:bg-slate-50 dark:hover:bg-slate-800/60')">
+                <span class="text-xs text-slate-800 dark:text-slate-200">{{ day.num }}</span>
+                
+                <!-- Event category dots indicators -->
+                <div class="flex justify-center gap-1 mt-1.5">
+                  @for (e of dayEvts; track e.title) {
+                    @if (e.day === day.num) {
+                      @if (e.type === 'live') {
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                      } @else if (e.type === 'assignments') {
+                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                      } @else if (e.type === 'quizzes') {
+                        <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                      }
+                    }
+                  }
+                </div>
+                @if (day.num === 12) {
+                  <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-brand-500 rounded-full animate-ping"></span>
+                }
+              </button>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- WEEKLY VIEW -->
+      @if (calendarMode() === 'weekly') {
+        <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl shadow-sm space-y-6 animate-fade-in">
+          <div class="flex justify-between items-center">
+            <h3 class="font-bold text-base text-slate-800 dark:text-slate-200">July 12 – July 18, 2026</h3>
+            <span class="text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 px-3 py-1 rounded-full">Active Academic Term Week</span>
+          </div>
+
+          <!-- Week list of events -->
+          <div class="space-y-4">
+            @for (dayOffset of [12, 13, 14, 15, 16, 17, 18]; track dayOffset) {
+              @let dayEvents = filteredCalendarEvents();
+              <div class="p-4 bg-slate-50 dark:bg-slate-850/40 rounded-2xl border border-slate-100 dark:border-slate-800/50 flex flex-col md:flex-row md:items-start gap-4">
+                <div class="w-24 shrink-0">
+                  <span class="text-[10px] uppercase font-bold text-slate-400 block">July {{ dayOffset }}</span>
+                  <span class="text-xs font-extrabold text-slate-800 dark:text-slate-200">
+                    @if (dayOffset === 12) { Sun }
+                    @else if (dayOffset === 13) { Mon }
+                    @else if (dayOffset === 14) { Tue }
+                    @else if (dayOffset === 15) { Wed }
+                    @else if (dayOffset === 16) { Thu }
+                    @else if (dayOffset === 17) { Fri }
+                    @else if (dayOffset === 18) { Sat }
+                  </span>
+                </div>
+                <div class="flex-1 space-y-2">
+                  <!-- Filter events manually in loop since @let is available -->
+                  @for (e of dayEvents; track e.title) {
+                    @if (e.day === dayOffset) {
+                      <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/40 shadow-xs flex justify-between items-center">
+                        <div>
+                          <div class="flex items-center gap-2">
+                            <span [class]="'w-2.5 h-2.5 rounded-full ' + (e.type === 'live' ? 'bg-emerald-500' : e.type === 'assignments' ? 'bg-rose-500' : 'bg-purple-500')"></span>
+                            <p class="font-extrabold text-xs text-slate-800 dark:text-slate-150">{{ e.title }}</p>
+                          </div>
+                          <p class="text-[10px] text-slate-400 mt-1 pl-4">Time: {{ e.time }} • Instructor: {{ e.instructor }}</p>
+                        </div>
+                        <span [class]="'text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ' + 
+                                         (e.type === 'live' ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600' : e.type === 'assignments' ? 'bg-rose-50 dark:bg-rose-950/20 text-rose-600' : 'bg-purple-50 dark:bg-purple-950/20 text-purple-600')">
+                          {{ e.type }}
+                        </span>
+                      </div>
+                    }
+                  }
+                  @if (dayOffset !== 12 && dayOffset !== 13 && dayOffset !== 14 && dayOffset !== 15 && dayOffset !== 18) {
+                    <p class="text-[11px] text-slate-400 italic">No schedules listed. Great day for self-study and deep focus.</p>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- DAILY VIEW -->
+      @if (calendarMode() === 'daily') {
+        <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 rounded-3xl shadow-sm space-y-6 animate-fade-in">
+          <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-4">
+            <div>
+              <span class="text-[10px] uppercase font-bold text-brand-500">Day View Schedule</span>
+              <h3 class="font-extrabold text-base text-slate-800 dark:text-slate-200">July {{ selectedCalendarDay() }}, 2026</h3>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button (click)="selectedCalendarDay.set(selectedCalendarDay() > 1 ? selectedCalendarDay() - 1 : 1)"
+                      class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-850 text-slate-500 transition-all" type="button"><mat-icon>chevron_left</mat-icon></button>
+              <span class="text-xs font-bold text-slate-600 dark:text-slate-400">Day {{ selectedCalendarDay() }}</span>
+              <button (click)="selectedCalendarDay.set(selectedCalendarDay() < 31 ? selectedCalendarDay() + 1 : 31)"
+                      class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-850 text-slate-500 transition-all" type="button"><mat-icon>chevron_right</mat-icon></button>
+            </div>
+          </div>
+
+          <!-- Hourly grid simulation -->
+          <div class="space-y-4">
+            @for (hour of ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM']; track hour) {
+              @let hourlyEvts = selectedDayEvents();
+              
+              <div class="flex items-start gap-4">
+                <span class="w-20 text-[10px] text-slate-400 font-bold uppercase pt-1">{{ hour }}</span>
+                <div class="flex-1 min-h-[48px] border-l border-slate-100 dark:border-slate-800/60 pl-4 relative">
+                  
+                  @for (e of hourlyEvts; track e.title) {
+                    <!-- Mock check if event hour roughly matches -->
+                    @if (e.time.startsWith(hour.substring(0, 5))) {
+                      <div class="absolute inset-y-0 left-4 right-0 p-3 bg-brand-500/10 dark:bg-brand-500/5 border-l-4 border-brand-500 rounded-r-xl shadow-xs">
+                        <div class="flex justify-between items-start">
+                          <div>
+                            <p class="font-extrabold text-xs text-slate-850 dark:text-slate-100">{{ e.title }}</p>
+                            <p class="text-[9px] text-slate-400 mt-0.5">Instructor: {{ e.instructor }}</p>
+                          </div>
+                          <span class="text-[9px] font-bold bg-white dark:bg-slate-900 text-slate-500 border border-slate-200 dark:border-slate-800 px-2 py-0.5 rounded-md uppercase">{{ e.type }}</span>
+                        </div>
+                      </div>
+                    }
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+    </div>
+
+    <!-- RIGHT AREA: Dynamic Agenda Sidebar & Goal Pins -->
+    <div class="space-y-6">
+      <!-- Selected Day Agenda -->
+      <div class="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+        <div class="flex justify-between items-center">
+          <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Agenda: Day {{ selectedCalendarDay() }}</h3>
+          <span class="text-[10px] uppercase font-bold text-slate-400">{{ selectedDayEvents().length }} Events</span>
+        </div>
+        
+        <div class="space-y-3">
+          @for (evt of selectedDayEvents(); track evt.title) {
+            <div [class]="'p-4 border-l-4 rounded-r-2xl space-y-2 relative transition-all hover:scale-[1.02] shadow-xs ' + 
+                         (evt.type === 'live' ? 'bg-emerald-500/5 border-emerald-500' : evt.type === 'assignments' ? 'bg-rose-500/5 border-rose-500' : 'bg-purple-500/5 border-purple-500')">
+              <div class="flex justify-between items-start">
+                <span [class]="'text-[9px] font-bold uppercase tracking-wider block ' + 
+                               (evt.type === 'live' ? 'text-emerald-600 dark:text-emerald-400' : evt.type === 'assignments' ? 'text-rose-600 dark:text-rose-400' : 'text-purple-600 dark:text-purple-400')">
+                  {{ evt.type }}
+                </span>
+                <span class="text-[9px] text-slate-400 font-bold uppercase">{{ evt.time }}</span>
+              </div>
+              <p class="font-extrabold text-xs text-slate-850 dark:text-slate-100 leading-snug">{{ evt.title }}</p>
+              <p class="text-[10px] text-slate-400">Instructor: {{ evt.instructor }}</p>
+              
+              @if (evt.type === 'live') {
+                <button (click)="state.activeView.set('live-classes')"
+                        class="w-full mt-2 py-1 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-[9px] rounded-lg transition-all border-none cursor-pointer" type="button">
+                  Go to Class Lobby
+                </button>
+              } @else if (evt.type === 'assignments') {
+                <button (click)="state.activeView.set('assignments')"
+                        class="w-full mt-2 py-1 bg-rose-500 hover:bg-rose-600 text-white font-bold text-[9px] rounded-lg transition-all border-none cursor-pointer" type="button">
+                  Open Assignment
+                </button>
+              }
+            </div>
+          } @empty {
+            <div class="text-center py-6">
+              <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-850 flex items-center justify-center mx-auto text-slate-400 mb-2">
+                <mat-icon class="text-sm">event_note</mat-icon>
+              </div>
+              <p class="text-xs text-slate-400 italic">No events or live classes registered for this day.</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Add Study Goal Form -->
+      <div class="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 shadow-sm space-y-4">
+        <div>
+          <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Pin Personal Study Goal</h3>
+          <p class="text-[10px] text-slate-400">Add customizable milestone reminders directly on your academic tracker sheet</p>
+        </div>
+        <form [formGroup]="eventForm" (ngSubmit)="addEventSubmit()" class="space-y-3">
+          <div class="space-y-1">
+            <span class="text-[10px] uppercase font-bold text-slate-500 block">Goal / Event Title</span>
+            <input type="text" formControlName="title" placeholder="e.g. Study Angular signals block"
+                   class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 dark:text-slate-100" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <span class="text-[10px] uppercase font-bold text-slate-500 block">Day Number</span>
+              <input type="number" formControlName="day" min="1" max="31"
+                     class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 dark:text-slate-100" />
+            </div>
+            <div class="space-y-1">
+              <span class="text-[10px] uppercase font-bold text-slate-500 block">Time Slot</span>
+              <input type="text" formControlName="time" placeholder="e.g. 02:00 PM"
+                     class="w-full p-2.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/40 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 dark:text-slate-100" />
+            </div>
+          </div>
+          <button type="submit" [disabled]="!eventForm.valid"
+                  class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-md cursor-pointer disabled:opacity-50 transition-all border-none">
+            Pin Event to Calendar
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>

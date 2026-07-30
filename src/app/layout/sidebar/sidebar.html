@@ -1,0 +1,104 @@
+<!-- 1. LEFT COLLAPSIBLE SIDEBAR -->
+<!-- Mobile backdrop overlay -->
+@if (!state.sidebarCollapsed()) {
+  <div (click)="state.sidebarCollapsed.set(true)"
+       (keyup.escape)="state.sidebarCollapsed.set(true)"
+       tabindex="0"
+       role="button"
+       aria-label="Close menu backdrop"
+       class="md:hidden fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-45 cursor-pointer transition-opacity duration-300">
+  </div>
+}
+
+<aside class="sticky top-0 h-screen bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-r border-slate-200/60 dark:border-slate-800/60 flex flex-col transition-all duration-300 z-40
+              max-md:fixed max-md:inset-y-0 max-md:left-0 max-md:z-50 max-md:shadow-2xl"
+       [class.w-64]="!state.sidebarCollapsed()" 
+       [class.w-20]="state.sidebarCollapsed()"
+       [class.max-md:-translate-x-full]="state.sidebarCollapsed()"
+       [class.max-md:translate-x-0]="!state.sidebarCollapsed()"
+       [class.max-md:w-64]="true">
+  
+  <!-- Logo Header -->
+  <div class="p-5 border-b border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between">
+    <div class="flex items-center gap-3 overflow-hidden">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-500 via-indigo-600 to-cyan-500 flex items-center justify-center text-white font-black text-xl shadow-md shrink-0">
+        Ω
+      </div>
+      <span class="font-bold text-lg bg-gradient-to-r from-brand-600 to-indigo-600 dark:from-brand-400 dark:to-cyan-400 bg-clip-text text-transparent transition-opacity duration-300 whitespace-nowrap"
+            [class.opacity-0]="state.sidebarCollapsed()" [class.pointer-events-none]="state.sidebarCollapsed()">
+        OmniLMS
+      </span>
+    </div>
+    <!-- Desktop toggle button -->
+    <button (click)="state.sidebarCollapsed.set(!state.sidebarCollapsed())" 
+            class="hidden md:flex p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+      <mat-icon>{{ state.sidebarCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    </button>
+    <!-- Mobile close button -->
+    <button (click)="state.sidebarCollapsed.set(true)" 
+            class="md:hidden p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Workspace Role Switcher -->
+  <div class="px-4 py-3 border-b border-slate-200/60 dark:border-slate-800/60" [class.hidden]="state.sidebarCollapsed()">
+    <span class="block text-[9px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">Workspace context</span>
+    <div class="grid grid-cols-3 gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
+      <button (click)="switchWorkspace('learner')" 
+              [class]="'text-[10px] font-bold py-1.5 rounded-lg transition-all border-none cursor-pointer ' + 
+                       (currentWorkspace() === 'learner' ? 'bg-brand-500 text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 bg-transparent')">
+        Student
+      </button>
+      <button (click)="switchWorkspace('instructor')" 
+              [class]="'text-[10px] font-bold py-1.5 rounded-lg transition-all border-none cursor-pointer ' + 
+                       (currentWorkspace() === 'instructor' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 bg-transparent')">
+        Teach
+      </button>
+      <button (click)="switchWorkspace('admin')" 
+              [class]="'text-[10px] font-bold py-1.5 rounded-lg transition-all border-none cursor-pointer ' + 
+                       (currentWorkspace() === 'admin' ? 'bg-cyan-600 text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 bg-transparent')">
+        Admin
+      </button>
+    </div>
+  </div>
+
+  <!-- Navigation Links -->
+  <nav class="flex-1 p-3 space-y-1.5 overflow-y-auto">
+    @for (item of dynamicSidebarItems(); track item.id) {
+      <button (click)="handleSidebarClick(item.id)"
+              [class]="'w-full flex items-center gap-4 px-4 py-3 rounded-xl font-medium transition-all duration-200 ' + 
+                       (isSidebarActive(item.id) ? 
+                        'bg-brand-500 text-white shadow-lg shadow-brand-500/20' : 
+                        'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100')">
+        <mat-icon [class.text-white]="isSidebarActive(item.id)">{{ item.icon }}</mat-icon>
+        <span class="transition-opacity duration-300 whitespace-nowrap" 
+              [class.opacity-0]="state.sidebarCollapsed()" [class.hidden]="state.sidebarCollapsed()">
+          {{ item.name }}
+        </span>
+        @if (currentWorkspace() === 'learner') {
+          @if (item.id === 'messages' && unreadMessagesCount() > 0 && !state.sidebarCollapsed()) {
+            <span class="ml-auto bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full font-bold animate-pulse">{{ unreadMessagesCount() }}</span>
+          }
+          @if (item.id === 'shopping-cart' && state.cartIds().length > 0 && !state.sidebarCollapsed()) {
+            <span class="ml-auto bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">{{ state.cartIds().length }}</span>
+          }
+          @if (item.id === 'wishlist' && state.wishlistedIds().length > 0 && !state.sidebarCollapsed()) {
+            <span class="ml-auto bg-brand-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">{{ state.wishlistedIds().length }}</span>
+          }
+        }
+      </button>
+    }
+  </nav>
+
+  <!-- User Profile Sidebar Footer -->
+  <div class="p-4 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center gap-3">
+    <img [src]="state.profile().profilePhoto" referrerpolicy="no-referrer" alt="Profile" 
+         class="w-10 h-10 rounded-full object-cover ring-2 ring-brand-500/30 shadow-inner shrink-0" />
+    <div class="overflow-hidden transition-opacity duration-300" 
+         [class.opacity-0]="state.sidebarCollapsed()" [class.hidden]="state.sidebarCollapsed()">
+      <p class="font-semibold text-sm truncate">{{ state.profile().fullName }}</p>
+      <span class="text-xs text-brand-600 dark:text-brand-400 font-medium truncate block">Enterprise VIP</span>
+    </div>
+  </div>
+</aside>

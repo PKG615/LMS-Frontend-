@@ -1,0 +1,100 @@
+<div class="space-y-6">
+  @if (error()) {
+    <p class="text-xs text-red-500">{{ error() }}</p>
+  }
+
+  <!-- Overview cards -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 p-5">
+      <mat-icon class="text-indigo-500">group</mat-icon>
+      <p class="text-2xl font-black text-slate-900 dark:text-slate-50 mt-2">{{ overview()?.users?.total ?? '—' }}</p>
+      <p class="text-[11px] text-slate-500">Total Users</p>
+      <div class="mt-2 space-y-0.5">
+        @for (r of roleEntries(); track r.role) {
+          <p class="text-[10px] text-slate-400">{{ r.role }}: {{ r.count }}</p>
+        }
+      </div>
+    </div>
+
+    <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 p-5">
+      <mat-icon class="text-emerald-500">library_books</mat-icon>
+      <p class="text-2xl font-black text-slate-900 dark:text-slate-50 mt-2">{{ overview()?.courses?.total ?? '—' }}</p>
+      <p class="text-[11px] text-slate-500">Total Courses</p>
+      <div class="mt-2 space-y-0.5">
+        @for (c of courseStatusEntries(); track c.status) {
+          <p class="text-[10px] text-slate-400">{{ c.status }}: {{ c.count }}</p>
+        }
+      </div>
+    </div>
+
+    <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 p-5">
+      <mat-icon class="text-amber-500">how_to_reg</mat-icon>
+      <p class="text-2xl font-black text-slate-900 dark:text-slate-50 mt-2">{{ overview()?.enrollments?.total ?? '—' }}</p>
+      <p class="text-[11px] text-slate-500">Total Enrollments</p>
+    </div>
+
+    <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 p-5">
+      <mat-icon class="text-rose-500">work</mat-icon>
+      <p class="text-2xl font-black text-slate-900 dark:text-slate-50 mt-2">{{ overview()?.internships?.total ?? '—' }}</p>
+      <p class="text-[11px] text-slate-500">Internships · {{ overview()?.internships?.totalApplications ?? 0 }} applications</p>
+    </div>
+  </div>
+
+  <!-- Revenue -->
+  <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 p-5 space-y-3">
+    <div class="flex items-center justify-between flex-wrap gap-3">
+      <h3 class="text-sm font-black text-slate-900 dark:text-slate-50">Revenue Report</h3>
+      <div class="flex items-center gap-2">
+        <input type="number" [ngModel]="revenueMonth()" (ngModelChange)="revenueMonth.set($event)" min="1" max="12"
+          class="w-16 text-xs rounded-lg border border-slate-200 dark:border-slate-800 p-1.5 bg-slate-50 dark:bg-slate-850" placeholder="Month" />
+        <input type="number" [ngModel]="revenueYear()" (ngModelChange)="revenueYear.set($event)"
+          class="w-20 text-xs rounded-lg border border-slate-200 dark:border-slate-800 p-1.5 bg-slate-50 dark:bg-slate-850" placeholder="Year" />
+        <button (click)="loadRevenue()" class="text-xs font-bold text-brand-500 bg-transparent border-none cursor-pointer">Apply</button>
+      </div>
+    </div>
+    @if (revenue()) {
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-xl font-black text-emerald-500">₹{{ revenue()!.totalRevenue | number }}</p>
+          <p class="text-[10px] text-slate-400">Total Revenue ({{ revenue()!.month }}/{{ revenue()!.year }})</p>
+        </div>
+        <div>
+          <p class="text-xl font-black text-slate-800 dark:text-slate-200">{{ revenue()!.paidEnrollmentCount }}</p>
+          <p class="text-[10px] text-slate-400">Paid Enrollments</p>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Top courses -->
+  <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 p-5 space-y-3">
+    <div class="flex items-center justify-between">
+      <h3 class="text-sm font-black text-slate-900 dark:text-slate-50">Top Courses</h3>
+      <div class="flex items-center gap-2">
+        <input type="number" [ngModel]="topCoursesLimit()" (ngModelChange)="topCoursesLimit.set($event)" min="1" max="50"
+          class="w-16 text-xs rounded-lg border border-slate-200 dark:border-slate-800 p-1.5 bg-slate-50 dark:bg-slate-850" />
+        <button (click)="loadTopCourses()" class="text-xs font-bold text-brand-500 bg-transparent border-none cursor-pointer">Apply</button>
+      </div>
+    </div>
+    <table class="w-full text-xs">
+      <thead>
+        <tr class="text-left text-slate-400 text-[10px] uppercase">
+          <th class="pb-2">Course</th>
+          <th class="pb-2">Enrollments</th>
+          <th class="pb-2">Rating</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (c of topCourses(); track c.id) {
+          <tr class="border-t border-slate-100 dark:border-slate-800">
+            <td class="py-2 font-bold text-slate-700 dark:text-slate-200">{{ c.title }}</td>
+            <td class="py-2 text-slate-500">{{ c.totalEnrollments }}</td>
+            <td class="py-2 text-slate-500">{{ c.averageRating | number:'1.1-1' }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="3" class="py-4 text-center text-slate-400">No data yet.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
