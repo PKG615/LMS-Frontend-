@@ -8,6 +8,6 @@
       "node"
     ]
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/app/pages/calendar/calendar.service", "src/app/pages/calendar/calendar-event.model"],
   "exclude": ["src/**/*.spec.ts"]
 }
