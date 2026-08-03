@@ -7,6 +7,6 @@
  * and the `/api` prefix mounted in src/app.ts.
  */
 export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:5000/api',
+  production: ture,
+  apiUrl: 'https://lms-backend-754i.onrender.com/api',
 };
