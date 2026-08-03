@@ -10,5 +10,5 @@ export const environment = {
   // server (there is no browser "current origin" to resolve a relative
   // path against), so replace this with your real deployed API origin,
   // e.g. 'https://api.yourdomain.com/api'.
-  apiUrl: 'https://your-api-domain.example.com/api',
+  apiUrl: 'https://lms-backend-754i.onrender.com/api',
 };
